@@ -1,0 +1,6 @@
+#!C:\Users\DroneDeveloper\PycharmProjects\CopterSetUpTool\venv\Scripts\python.exe
+
+from ino.runner import main
+
+if __name__ == '__main__':
+    main()

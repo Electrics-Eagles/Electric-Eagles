@@ -1,0 +1,46 @@
+void logger_bluthooth() {
+    Serial.print(F("Raw Radio Data "));
+    Serial.print(F("Channel 1 : "));
+    Serial.print(receiver_input_channel_1);
+    Serial.print(F(" Channel 2 : "));
+    Serial.print(receiver_input_channel_2);
+    Serial.print(F(" Channel 3 : "));
+    Serial.print(receiver_input_channel_3);
+    Serial.print(F(" Channel 4 : "));
+    Serial.print(receiver_input_channel_4);
+    Serial.print(F(" throttle: "));
+    Serial.print(throttle);
+    Serial.print(F(" battery_voltage: "));
+    Serial.print(battery_voltage);
+    Serial.print(F(" ESC 1 : "));
+    Serial.print(esc_1);
+    Serial.print(F(" ESC 2 : "));
+    Serial.print(esc_2);
+    Serial.print(F(" ESC 3 : "));
+    Serial.print(esc_3);
+    Serial.print(F(" ESC 4 : "));
+    Serial.print(esc_4);
+    Serial.print(F(" Gyro Data:"));
+    Serial.print(acc_x);
+    Serial.print(" ");
+    Serial.print(acc_y);
+    Serial.print(" ");
+    Serial.print(acc_z);
+    Serial.print(" ");
+    Serial.print(acc_total_vector);
+    Serial.print(" ");
+    Serial.print(F("Temp: "));
+    Serial.print(temperature);
+    Serial.print("Calc PID Data");
+    Serial.print
+
+
+
+
+    Serial.print(" ");
+    Serial.print(angle_pitch_acc);
+    Serial.print(" ");
+    Serial.print(angle_pitch);
+    Serial.print(" ");
+    Serial.print(angle_roll);
+  }

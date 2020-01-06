@@ -1,0 +1,1 @@
+C:\Users\DroneDeveloper\PycharmProjects\CopterSetUpTool\bin\avrdude.exe -C C:\Users\DroneDeveloper\PycharmProjects\CopterSetUpTool\bin\avrdude.conf -p m328p -c arduino -P COM13 samplecode.hex
