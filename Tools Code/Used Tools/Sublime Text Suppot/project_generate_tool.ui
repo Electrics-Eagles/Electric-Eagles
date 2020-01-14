@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>410</width>
+    <height>354</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QPushButton { 
+box-shadow:inset 0px -3px 7px 0px #29bbff;
+	background:linear-gradient(to bottom, #2dabf9 5%, #0688fa 100%);
+	background-color:#257aa6;
+	border-radius:0px;
+	border:1px solid #0b0e07;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial Black;
+	font-size:20px;
+	padding:9px 23px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #263666;
+}
+
+
+QPushButton:hover {
+	background-color:#257aa6;
+}
+QPushButton:active {
+	position:relative;
+	top:1px;
+}
+QMainWindow {
+background-color: #06131a;
+}
+</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="1" column="0">
+     <widget class="QPushButton" name="pushButton_4">
+      <property name="text">
+       <string>Generate</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <layout class="QFormLayout" name="formLayout">
+      <item row="0" column="0">
+       <widget class="QPushButton" name="pushButton">
+        <property name="text">
+         <string>Project path</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QPushButton" name="pushButton_2">
+        <property name="text">
+         <string>Arduino IDE path</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="projectNameLabel">
+        <property name="styleSheet">
+         <string notr="true">font: 87 18pt &quot;Arial Black&quot;;
+color: rgb(255, 255, 255);</string>
+        </property>
+        <property name="text">
+         <string>Project name</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLineEdit" name="projectNameLineEdit"/>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="controllerTypeLabel">
+        <property name="styleSheet">
+         <string notr="true">font: 87 18pt &quot;Arial Black&quot;;
+color: rgb(255, 255, 255);</string>
+        </property>
+        <property name="text">
+         <string>Controller Type</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QComboBox" name="controllerTypeComboBox"/>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="cOMPortLabel">
+        <property name="styleSheet">
+         <string notr="true">font: 87 18pt &quot;Arial Black&quot;;
+color: rgb(255, 255, 255);</string>
+        </property>
+        <property name="text">
+         <string>COM Port</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QComboBox" name="cOMPortComboBox"/>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
