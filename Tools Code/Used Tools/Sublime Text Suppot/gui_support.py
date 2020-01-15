@@ -4,7 +4,6 @@ import threading
 import urllib.request
 from pathlib import Path
 from zipfile import ZipFile
-import datetime
 import easygui
 from PyQt5 import QtWidgets
 
@@ -17,20 +16,22 @@ class ExampleApp(QtWidgets.QMainWindow, project_generate_tool.Ui_MainWindow):
         # и т.д. в файле design.py
         super().__init__()
         self.setupUi(self)  # Это нужно для инициализации нашего дизайна
-        self.controllerTypeComboBox.addItems(['atmega328', 'atmega328old', 'atmega168'])
-        for com_ports in range(0, 99):
-            self.cOMPortComboBox.addItem("COM" + str(com_ports))
-        self.pushButton.clicked.connect(self.project_path_select)
-        self.pushButton_2.clicked.connect(self.arduino_ide_path)
-        self.pushButton_4.clicked.connect(self.main_thread)
+        self.controllerTypeComboBox.addItems(['atmega328', 'atmega328old', 'atmega168'])  # add values to combobox
+        for com_ports in range(0, 99):  # make loop
+            self.cOMPortComboBox.addItem("COM" + str(com_ports))  # add values to combox
+        self.pushButton.clicked.connect(self.project_path_select)  # add halder to button
+        self.pushButton_4.clicked.connect(self.main_thread)  # add halder to button
 
     def project_path_select(self):
         self.path = easygui.diropenbox("Select Project Path")  # make dir open box dialog
+        self.label.setText(self.path)  # display a path to text in display
 
     pass
 
-    def arduino_ide_path(self):
-        self.sublime_text = easygui.fileopenbox("Open Sublime Text 3 file")  # make found arduion path
+    def read_config(self):
+        config_file = open("./software_config.config")  # open config file
+        raw = config_file.readlines()  # read it lines
+        self.link = raw[1].split(";")[1]  # parse a link
 
     pass
 
@@ -41,26 +42,31 @@ class ExampleApp(QtWidgets.QMainWindow, project_generate_tool.Ui_MainWindow):
 
     pass
 
-    def inciliace_project_thread(self):
-        os.mkdir(self.path + "\\" + self.projectNameLineEdit.text())  # create project folder
-        os.chdir(self.path + "\\" + self.projectNameLineEdit.text())  # change dir to created folder dir
-        urllib.request.urlretrieve("https://github.com/alex5250/ElectricsEaglesCore/archive/master.zip",
-                                   "./kernel.zip")  # downland a kernel
-        with ZipFile('kernel.zip', 'r') as zipObj:  # open it as zip object
-            zipObj.extractall('Main')  # extract it to folder
-        os.chdir(str(Path.home()))
-        final_path="sublime_text " + self.path + "//" + self.projectNameLineEdit.text()
-        print(self.sublime_text)
-        os.system(final_path)
-        build_file = open(self.path+"//"+self.projectNameLineEdit.text()+"_project.confg", "a", encoding='UTF-8')  # create new file
+    def make_config(self):
+        build_file = open(self.path + "//" + self.projectNameLineEdit.text() + "_project.confg", "a",
+                          encoding='UTF-8')  # create new file
         build_file.write("{ \n"
                          "\n "
                          "Drone Project : \n "
-                         "                 .{ \n "
                          "Hardware:  " + self.controllerTypeComboBox.currentText() + "\n "
                                                                                      ""
                                                                                      "Port : " + self.cOMPortComboBox.currentText() + "\n"
                          + "Software : Is custom software based on Electrics Eagles software . All API and it softaware is using GPL V3 License \n \n }")
+
+    pass
+
+    def inciliace_project_thread(self):
+        self.read_config()  # read config file
+        os.system("start sublime_text_perpare.cmd")
+        os.mkdir(self.path + "\\" + self.projectNameLineEdit.text())  # create project folder
+        os.chdir(self.path + "\\" + self.projectNameLineEdit.text())  # change dir to created folder dir
+        self.make_config()  # make config file
+        urllib.request.urlretrieve(self.link,
+                                   "./kernel.zip")  # downland a kernel
+        with ZipFile('kernel.zip', 'r') as zipObj:  # open it as zip object
+            zipObj.extractall('Main')  # extract it to folder
+        os.chdir(str(Path.home()))  # return to home user folder
+        os.system("sublime_text " + self.path + "//" + self.projectNameLineEdit.text())  # run sublime text
 
 
 pass
