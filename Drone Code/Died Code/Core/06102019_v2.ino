@@ -1,31 +1,30 @@
 
-///////////////////////////////////////////////////////////////////////////////////////
-
-#include <Wire.h>                          //Include the Wire.h library so we can communicate with the gyro.
-#include <EEPROM.h>
-#include <HCSR04.h>
-#include <Servo.h>
-Servo ESC1;
-Servo ESC2;
-Servo ESC3;
-Servo ESC4;
-//Include the EEPROM.h library so we can store information onto the EEPROM
-#define DEBUG 0
-#define TEST_MODE 0
-#define ESC_AUTOCALIBRATE 0
-#define ULTRASONIC_STBILISTATION_LINERAR 0
-#define ULTRASONIC_STBILISTATION_SQERICAL 0
-#define ULTRASONIC_STBILISTATION_PROCENTAL 0
-#define ULTRASONIC_STBILISTATION_DISABLED 1
-#define BLUETOOH 0
-#define TIMEPERIOD 0
-#define ULTRASONIC_1_PIN_1 1
-#define ULTRASONIC_1_PIN_2 2
-#define CALIBRATE_ESC 0
-UltraSonicDistanceSensor distanceSensor (ULTRASONIC_1_PIN_1, ULTRASONIC_1_PIN_2);
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//PID gain and limit settings
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#include <Wire.h> // Import libary for work with gyroscope                       
+#include <EEPROM.h> // Load libary for work with EEPROM
+#include <HCSR04.h> // Load libary for work with UltraSonics 
+#include <Servo.h> // Load libary for work with Servo ( ESC)
+Servo ESC1; // Create ESC objects
+Servo ESC2;// Create ESC objects
+Servo ESC3;// Create ESC objects
+Servo ESC4;// Create ESC objects
+//-------------------------------------------------------SETTINGS-----------------------------------
+#define DEBUG 0 // Turn on debug mode
+#define TEST_MODE 0 // Turn on test mode 
+#define ESC_AUTOCALIBRATE 0 // Turn on ESC_AUTOCALIBRATE
+#define ULTRASONIC_STBILISTATION_LINERAR 0 // Turn on ULTRASONIC_STBILISTATION_LINERAR
+#define ULTRASONIC_STBILISTATION_SQERICAL 0// Turn on ULTRASONIC_STBILISTATION_SQERICAL
+#define ULTRASONIC_STBILISTATION_PROCENTAL 0// Turn on ULTRASONIC_STBILISTATION_PROCENTAL
+#define ULTRASONIC_STBILISTATION_DISABLED 0// Turn on ULTRASONIC_STBILISTATION_DISABLED
+#define BLUETOOH 0 // Turn on BLUETOOH
+#define TIMEPERIOD 0 // Sets TIMEPERIOD between x1 data and x2 data
+#define ULTRASONIC_1_PIN_1 13 // Sets ultrasonics pin
+#define ULTRASONIC_1_PIN_2 12 // Sets ultrasonics pin
+#define MEAN_COUNT 0 //Sets mean buffer
+#define MAX_VALUE 300 // 
+boolean auto_level = true;     //Auto level on (true) or off (false)
+//-------------------------------------------------------SETTINGS-----------------------------------
+UltraSonicDistanceSensor distanceSensor (ULTRASONIC_1_PIN_1, ULTRASONIC_1_PIN_2); // Creating a object for ULTRASONIC
+//----------------------------------------------------------PID gain and limit settings---------------------------
 float pid_p_gain_roll = 1.3;               //Gain setting for the roll P-controller
 float pid_i_gain_roll = 0.04;              //Gain setting for the roll I-controller
 float pid_d_gain_roll = 18.0;              //Gain setting for the roll D-controller
@@ -40,25 +39,20 @@ float pid_p_gain_yaw = 4.0;                //Gain setting for the pitch P-contro
 float pid_i_gain_yaw = 0.02;               //Gain setting for the pitch I-controller. //0.02
 float pid_d_gain_yaw = 0.0;                //Gain setting for the pitch D-controller.
 int pid_max_yaw = 400;                     //Maximum output of the PID-controller (+/-)
-
-boolean auto_level = true;                 //Auto level on (true) or off (false)
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//Declaring global variables
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-byte last_channel_1, last_channel_2, last_channel_3, last_channel_4;
-byte eeprom_data[36];
-byte highByte, lowByte;
-volatile int receiver_input_channel_1, receiver_input_channel_2, receiver_input_channel_3, receiver_input_channel_4;
-int counter_channel_1, counter_channel_2, counter_channel_3, counter_channel_4, loop_counter;
-int esc_1, esc_2, esc_3, esc_4;
-int throttle, battery_voltage;
-int cal_int, start, gyro_address;
-int receiver_input[5];
-int temperature;
+//----------------------------------------Declaring global variables-------------------------
+byte last_channel_1, last_channel_2, last_channel_3, last_channel_4; // Radio varibles
+byte eeprom_data[36]; // EEprom varible
+byte highByte, lowByte; // Gyro varible
+volatile int receiver_input_channel_1, receiver_input_channel_2, receiver_input_channel_3, receiver_input_channel_4; // Input data varible
+int counter_channel_1, counter_channel_2, counter_channel_3, counter_channel_4, loop_counter; // Input data varible
+int esc_1, esc_2, esc_3, esc_4; // Esc motors speed varible
+int throttle, battery_voltage; // battery_voltage and throttle varibles
+int cal_int, start, gyro_address; // start call drone and  gyro_address varible
+int receiver_input[5]; // Input revkicer data calibrate setup
+int temperature; // teemp
 int acc_axis[4], gyro_axis[4];
+// ------------------------------------------MATHS VARIBLES --------------------------------
 float roll_level_adjust, pitch_level_adjust;
-
 long acc_x, acc_y, acc_z, acc_total_vector;
 unsigned long timer_channel_1, timer_channel_2, timer_channel_3, timer_channel_4, esc_timer, esc_loop_timer;
 unsigned long timer_1, timer_2, timer_3, timer_4, current_time;
@@ -71,103 +65,160 @@ float pid_i_mem_pitch, pid_pitch_setpoint, gyro_pitch_input, pid_output_pitch, p
 float pid_i_mem_yaw, pid_yaw_setpoint, gyro_yaw_input, pid_output_yaw, pid_last_yaw_d_error;
 float angle_roll_acc, angle_pitch_acc, angle_pitch, angle_roll;
 boolean gyro_angles_set;
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//Setup routine
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-long convert(long x, long in_min, long in_max, long out_min, long out_max) {
-  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+int loops = 0;
+int sum = 0;
+// ------------------------------------------MATHS VARIBLES --------------------------------
+//----------------------------------------Declaring global variables-------------------------
+long convert(long x, long in_min, long in_max, long out_min, long out_max) { // Math map funcion
+  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min; // Math formula
 }
-unsigned long previousMillis = 0;
-boolean wait(int interval) {
-  unsigned long currentMillis = millis();
-  if (currentMillis - previousMillis >= interval) {
-    // save the last time you blinked the LED
-    previousMillis = currentMillis;
-    return true;
+unsigned long previousMillis = 0; // Set previousMillis varible = 0
+boolean wait(int interval) { // Set funcion
+  unsigned long currentMillis = millis(); // Set currentMillis= millis()
+  if (currentMillis - previousMillis >= interval) { // Check if interval is bigger than these varibles subtraction
+    previousMillis = currentMillis; // Set currentMillis= previousMillis
+    return true; // return true if all okay
   }
-  return false;
+  return false; //  else return false
 }
-
-void stabilisaton_funcion_linear(int timeperiod) {
-  int distaneone = distanceSensor.measureDistanceCm();
-  while (timer_channel_3 < 1500 && timer_channel_3 > 1600)
+float ultrasoincs() { // Utrasonics data mean get funicon
+  if (loops > MEAN_COUNT) { // if loops ( varible) the same that MEAN_COUNT
+    float nowresult = sum / loops; // Calculate a nowresult
+    loops = 0; // Set loops zero
+    sum = sum + distanceSensor.measureDistanceCm(); // sum a sum + distanceSensor
+    return nowresult; // retun result
+  }
+  sum = sum + distanceSensor.measureDistanceCm(); // sum a sum + distanceSensor
+  loops++; // add one for loops ! On maths lang. n+1
+}
+void stabilisaton_funcion_linear(int timeperiod) { // funcion
+  int distaneone = (int)ultrasoincs(); // set data form prev. funcion plus conver it to int
+  while (receiver_input_channel_3 < 1500 && receiver_input_channel_3 > 1600) // if receiver_input_channel_3 is a smaller than 1500 but bigget than 1600 do this code
   {
-    while (wait(timeperiod))
+    while (wait(timeperiod)) // wait a period
     {
-      int distancetwo = distanceSensor.measureDistanceCm();
-
-      float trolinte = (distancetwo - distaneone) * 2000 / 300;
-      receiver_input_channel_3 = (int)trolinte;
+      int distancetwo =  (int)ultrasoincs(); // set data form prev. funcion plus conver it to int
+      float trolinte = (distancetwo - distaneone) * 2000 / 300; // usnig math formula calculate it
+      receiver_input_channel_3 = (int)trolinte; //set it
     }
   }
 }
-void stabilisaton_funcion_sqear( int timeperiod) {
-  int distaneone = distanceSensor.measureDistanceCm();
-  while (timer_channel_3 < 1500 && timer_channel_3 > 1600)
+void stabilisaton_funcion_sqear( int timeperiod) {// funcion
+  int distaneone = (int)ultrasoincs(); // set data form prev. funcion plus conver it to int
+  while (receiver_input_channel_3 < 1500 && receiver_input_channel_3 > 1600) // if receiver_input_channel_3 is a smaller than 1500 but bigget than 1600 do this code
   {
-    while (wait(timeperiod))
     {
-      int distancetwo = distanceSensor.measureDistanceCm();
-
-      float add_error = (distancetwo - distaneone) * (distancetwo - distaneone);
-      receiver_input_channel_3 = receiver_input_channel_3 + add_error;
+      while (wait(timeperiod)) // wait a period
+      {
+        int distancetwo =  (int)ultrasoincs();// set data form prev. funcion plus conver it to int
+        float add_error = (distancetwo - distaneone) * (distancetwo - distaneone); // usnig math formula calculate it
+        receiver_input_channel_3 = receiver_input_channel_3 + add_error; //set it
+      }
     }
   }
 }
 
-void stabilisaton_funcion_perentage(int timeperiod) {
-  int distaneone = distanceSensor.measureDistanceCm();
-  while (timer_channel_3 < 1500 && timer_channel_3 > 1600)
+void stabilisaton_funcion_perentage(int timeperiod) { // funcion
+  int distaneone =  (int)ultrasoincs(); // set data form prev. funcion plus conver it to int
+  while (receiver_input_channel_3 < 1500 && receiver_input_channel_3 > 1600) // if receiver_input_channel_3 is a smaller than 1500 but bigget than 1600 do this code
   {
-    while (wait(timeperiod))
+    while (wait(timeperiod))  // wait a period
     {
-      int distancetwo = distanceSensor.measureDistanceCm();
-
-      float add_error = (distancetwo - distaneone) * (distancetwo - distaneone);
-      receiver_input_channel_3 = receiver_input_channel_3 + add_error;
+      int distancetwo =  (int)ultrasoincs();  // set data form prev. funcion plus conver it to int
+      float add_error = convert((distancetwo - distaneone) /MAX_VALUE*100,0,100,1000,2000);//mathformula
+      receiver_input_channel_3 =add_error;//set it
     }
   }
 }
-void gyroprint() {
-  Serial.print(acc_x);
-  Serial.print(", ");
-  Serial.print(acc_y);
-  Serial.print(", ");
-  Serial.print(acc_z);
-}
-void check_ultrasonics() {
-  if (ULTRASONIC_STBILISTATION_LINERAR == 1) {
-    stabilisaton_funcion_linear(TIMEPERIOD);
-  }
-  if (ULTRASONIC_STBILISTATION_SQERICAL == 1) {
-    stabilisaton_funcion_sqear(TIMEPERIOD);
-  }
-  if (ULTRASONIC_STBILISTATION_PROCENTAL == 1) {
-    stabilisaton_funcion_perentage(TIMEPERIOD);
-  }
-  if (ULTRASONIC_STBILISTATION_DISABLED == 1) {
 
+void gyroprint() { // Print gyro data
+  if (DEBUG == 1) // Check if gyro ==1
+  {
+    Serial.print(acc_x); // Print
+    Serial.print(", ");// Print demiter
+    Serial.print(acc_y);// Print
+    Serial.print(", ");// Print demiter
+    Serial.print(acc_z);// Print
   }
 }
-void esc_calibrate() {
-  if (CALIBRATE_ESC == 1)
+void check_ultrasonics() { // Check check_ultrasonics settings
+  if (ULTRASONIC_STBILISTATION_LINERAR == 1) { //Check check_ultrasonics settings
+    stabilisaton_funcion_linear(TIMEPERIOD); //call funcions
+  }
+  if (ULTRASONIC_STBILISTATION_SQERICAL == 1) {//Check check_ultrasonics settings
+    stabilisaton_funcion_sqear(TIMEPERIOD); //call funcions
+  }
+  if (ULTRASONIC_STBILISTATION_PROCENTAL == 1) {//Check check_ultrasonics settings
+    stabilisaton_funcion_perentage(TIMEPERIOD); //call funcions
+  }
+  if (ULTRASONIC_STBILISTATION_DISABLED == 1) {//Check check_ultrasonics settings
+  }
+}
+void esc_calibrate() { // autocalibrate esc
+  if (ESC_AUTOCALIBRATE == 1)
   {
-    Serial.println("Calibrate ESC ....");
-    ESC1.write(180);
-    ESC2.write(180);
-    ESC3.write(180);
-    ESC4.write(180);
-    delay(2000);
-    ESC1.write(0);
-    ESC2.write(0);
-    ESC3.write(0);
-    ESC4.write(0);
-    Serial.println("Calibrate ESC ....OK");
+    Serial.println("Calibrate ESC ...."); // print msg to terminal
+    ESC1.write(180); // start calibreate
+    ESC2.write(180);// start calibreate
+    ESC3.write(180);// start calibreate
+    ESC4.write(180);// start calibreate
+    delay(2000); // wait two seconds
+    Serial.println("Remove and connect battary.....");// print msg to terminal
+    ESC1.write(0);// start calibreate
+    ESC2.write(0);// start calibreate
+    ESC3.write(0);// start calibreate
+    ESC4.write(0);// start calibreate
+    Serial.println("Calibrate ESC ....OK");// print msg to terminal
+  }
+}
+void setports() {
+  PCICR |= (1 << PCIE0);    // set PCIE0 to enable PCMSK0 scan
+  PCMSK0 |= (1 << PCINT0);  // set PCINT0 (digital input 8) to trigger an interrupt on state change
+  PCMSK0 |= (1 << PCINT1);  // set PCINT1 (digital input 9)to trigger an interrupt on state change
+  PCMSK0 |= (1 << PCINT2);  // set PCINT2 (digital input 10)to trigger an interrupt on state change
+  PCMSK0 |= (1 << PCINT3);  // set PCINT3 (digital input 11)to trigger an interrupt on state change
+}
+//This routine is called every time input 8, 9, 10 or 11 changed state
+ISR(PCINT0_vect) {
+  //Channel 1=========================================
+  if (last_channel_1 == 0 && PINB & B00000001 ) {       //Input 8 changed from 0 to 1
+    last_channel_1 = 1;                                 //Remember current input state
+    timer_1 = micros();                                 //Set timer_1 to micros()
+  }
+  else if (last_channel_1 == 1 && !(PINB & B00000001)) { //Input 8 changed from 1 to 0
+    last_channel_1 = 0;                                 //Remember current input state
+    receiver_input_channel_1 = micros() - timer_1;      //Channel 1 is micros() - timer_1
+  }
+  //Channel 2=========================================
+  if (last_channel_2 == 0 && PINB & B00000010 ) {       //Input 9 changed from 0 to 1
+    last_channel_2 = 1;                                 //Remember current input state
+    timer_2 = micros();                                 //Set timer_2 to micros()
+  }
+  else if (last_channel_2 == 1 && !(PINB & B00000010)) { //Input 9 changed from 1 to 0
+    last_channel_2 = 0;                                 //Remember current input state
+    receiver_input_channel_2 = micros() - timer_2;      //Channel 2 is micros() - timer_2
+  }
+  //Channel 3=========================================
+  if (last_channel_3 == 0 && PINB & B00000100 ) {       //Input 10 changed from 0 to 1
+    last_channel_3 = 1;                                 //Remember current input state
+    timer_3 = micros();                                 //Set timer_3 to micros()
+  }
+  else if (last_channel_3 == 1 && !(PINB & B00000100)) { //Input 10 changed from 1 to 0
+    last_channel_3 = 0;                                 //Remember current input state
+    receiver_input_channel_3 = micros() - timer_3;      //Channel 3 is micros() - timer_3
+  }
+  //Channel 4=========================================
+  if (last_channel_4 == 0 && PINB & B00001000 ) {       //Input 11 changed from 0 to 1
+    last_channel_4 = 1;                                 //Remember current input state
+    timer_4 = micros();                                 //Set timer_4 to micros()
+  }
+  else if (last_channel_4 == 1 && !(PINB & B00001000)) { //Input 11 changed from 1 to 0
+    last_channel_4 = 0;                                 //Remember current input state
+    receiver_input_channel_4 = micros() - timer_4;      //Channel 4 is micros() - timer_4
   }
 }
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(9600); // set port speed
   //Copy the EEPROM data for fast access data.
   Serial.println("Copter Firmware for copter! This code based of YMCL software based (Link : https://github.com/gibsjose) Edited by Alex Zaslavskis");
   gyro_address = 0x68;                                           //Store the gyro address in the variable.
@@ -228,16 +279,18 @@ void setup() {
   gyro_axis_cal[2] /= 2000;                                                 //Divide the pitch total by 2000.
   gyro_axis_cal[3] /= 2000;                                                 //Divide the yaw total by 2000.
   Serial.println("Gyro_axis_call reciver............OK");
-  Serial.println("Set ESC pins");
+  Serial.println("Set Reciver pins");
   PCICR |= (1 << PCIE0);                                                    //Set PCIE0 to enable PCMSK0 scan.
   PCMSK0 |= (1 << PCINT0);                                                  //Set PCINT0 (digital input 8) to trigger an interrupt on state change.
   PCMSK0 |= (1 << PCINT1);                                                  //Set PCINT1 (digital input 9)to trigger an interrupt on state change.
   PCMSK0 |= (1 << PCINT2);                                                  //Set PCINT2 (digital input 10)to trigger an interrupt on state change.
   PCMSK0 |= (1 << PCINT3);                                                  //Set PCINT3 (digital input 11)to trigger an interrupt on state change.
-  Serial.println("Set ESC pins..................OK");
+  Serial.println("Set Reciver pins..................OK");
   Serial.println("Check Reciver .................");
+  setports();
   //Wait until the receiver is active and the throtle is set to the lower position.
-
+  Serial.println(receiver_input_channel_3);
+  Serial.println(receiver_input_channel_4);
   while (receiver_input_channel_3 < 990 || receiver_input_channel_3 > 1020 || receiver_input_channel_4 < 1400) {
     receiver_input_channel_3 = convert_receiver_channel(3);                 //Convert the actual receiver signals for throttle to the standard 1000 - 2000us
     receiver_input_channel_4 = convert_receiver_channel(4);                 //Convert the actual receiver signals for yaw to the standard 1000 - 2000us
@@ -275,9 +328,9 @@ void setup() {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Main program loop
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 void loop() {
-  gyroprint();
-  check_ultrasonics();
+
   //65.5 = 1 deg/sec (check the datasheet of the MPU-6050 for more information).
   gyro_roll_input = (gyro_roll_input * 0.7) + ((gyro_roll / 65.5) * 0.3);   //Gyro pid input is deg/sec.
   gyro_pitch_input = (gyro_pitch_input * 0.7) + ((gyro_pitch / 65.5) * 0.3);//Gyro pid input is deg/sec.
@@ -377,7 +430,7 @@ void loop() {
   }
 
   calculate_pid();                                                            //PID inputs are known. So we can calculate the pid output.
-  gyroprint();
+
   //The battery voltage is needed for compensation.
   //A complementary filter is used to reduce noise.
   //0.09853 = 0.08 * 1.2317.
@@ -464,54 +517,6 @@ void loop() {
 //More information about this subroutine can be found in this video:
 //https://youtu.be/bENjl1KQbvo
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-ISR(PCINT0_vect) {
-  current_time = micros();
-  //Channel 1=========================================
-  if (PINB & B00000001) {                                                   //Is input 8 high?
-    if (last_channel_1 == 0) {                                              //Input 8 changed from 0 to 1.
-      last_channel_1 = 1;                                                   //Remember current input state.
-      timer_1 = current_time;                                               //Set timer_1 to current_time.
-    }
-  }
-  else if (last_channel_1 == 1) {                                           //Input 8 is not high and changed from 1 to 0.
-    last_channel_1 = 0;                                                     //Remember current input state.
-    receiver_input[1] = current_time - timer_1;                             //Channel 1 is current_time - timer_1.
-  }
-  //Channel 2=========================================
-  if (PINB & B00000010 ) {                                                  //Is input 9 high?
-    if (last_channel_2 == 0) {                                              //Input 9 changed from 0 to 1.
-      last_channel_2 = 1;                                                   //Remember current input state.
-      timer_2 = current_time;                                               //Set timer_2 to current_time.
-    }
-  }
-  else if (last_channel_2 == 1) {                                           //Input 9 is not high and changed from 1 to 0.
-    last_channel_2 = 0;                                                     //Remember current input state.
-    receiver_input[2] = current_time - timer_2;                             //Channel 2 is current_time - timer_2.
-  }
-  //Channel 3=========================================
-  if (PINB & B00000100 ) {                                                  //Is input 10 high?
-    if (last_channel_3 == 0) {                                              //Input 10 changed from 0 to 1.
-      last_channel_3 = 1;                                                   //Remember current input state.
-      timer_3 = current_time;                                               //Set timer_3 to current_time.
-    }
-  }
-  else if (last_channel_3 == 1) {                                           //Input 10 is not high and changed from 1 to 0.
-    last_channel_3 = 0;                                                     //Remember current input state.
-    receiver_input[3] = current_time - timer_3;                             //Channel 3 is current_time - timer_3.
-
-  }
-  //Channel 4=========================================
-  if (PINB & B00001000 ) {                                                  //Is input 11 high?
-    if (last_channel_4 == 0) {                                              //Input 11 changed from 0 to 1.
-      last_channel_4 = 1;                                                   //Remember current input state.
-      timer_4 = current_time;                                               //Set timer_4 to current_time.
-    }
-  }
-  else if (last_channel_4 == 1) {                                           //Input 11 is not high and changed from 1 to 0.
-    last_channel_4 = 0;                                                     //Remember current input state.
-    receiver_input[4] = current_time - timer_4;                             //Channel 4 is current_time - timer_4.
-  }
-}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Subroutine for reading the gyro
@@ -669,4 +674,3 @@ void set_gyro_registers() {
     Wire.endTransmission();                                                    //End the transmission with the gyro
 
   }
-}

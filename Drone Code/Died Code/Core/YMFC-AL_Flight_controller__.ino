@@ -1,28 +1,29 @@
-
 ///////////////////////////////////////////////////////////////////////////////////////
-
+//Terms of use
+///////////////////////////////////////////////////////////////////////////////////////
+//THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//THE SOFTWARE.
+///////////////////////////////////////////////////////////////////////////////////////
+//Safety note
+///////////////////////////////////////////////////////////////////////////////////////
+//Always remove the propellers and stay away from the motors unless you
+//are 100% certain of what you are doing.
+///////////////////////////////////////////////////////////////////////////////////////
+//Edited by Alex Zaslavskis
 #include <Wire.h>                          //Include the Wire.h library so we can communicate with the gyro.
-#include <EEPROM.h>
+#include <EEPROM.h>                        //Include the EEPROM.h library so we can store information onto the EEPROM
 #include <HCSR04.h>
-#include <Servo.h>
-Servo ESC1;
-Servo ESC2;
-Servo ESC3;
-Servo ESC4;
-//Include the EEPROM.h library so we can store information onto the EEPROM
-#define DEBUG 0
-#define TEST_MODE 0
-#define ESC_AUTOCALIBRATE 0
-#define ULTRASONIC_STBILISTATION_LINERAR 0
-#define ULTRASONIC_STBILISTATION_SQERICAL 0
-#define ULTRASONIC_STBILISTATION_PROCENTAL 0
-#define ULTRASONIC_STBILISTATION_DISABLED 1
-#define BLUETOOH 0
-#define TIMEPERIOD 0
-#define ULTRASONIC_1_PIN_1 1
-#define ULTRASONIC_1_PIN_2 2
-#define CALIBRATE_ESC 0
-UltraSonicDistanceSensor distanceSensor (ULTRASONIC_1_PIN_1, ULTRASONIC_1_PIN_2);
+UltraSonicDistanceSensor X_ULTRASONICS(7, 8);
+unsigned long previousMillis = 0;
+#define STEP_MOVE 10
+#define TIME_DIFF 2
+#define DIFF_PARAM 5
+#define DIFF_PARAM_ -5
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //PID gain and limit settings
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -75,10 +76,6 @@ boolean gyro_angles_set;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Setup routine
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-long convert(long x, long in_min, long in_max, long out_min, long out_max) {
-  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
-}
-unsigned long previousMillis = 0;
 boolean wait(int interval) {
   unsigned long currentMillis = millis();
   if (currentMillis - previousMillis >= interval) {
@@ -88,96 +85,30 @@ boolean wait(int interval) {
   }
   return false;
 }
-
-void stabilisaton_funcion_linear(int timeperiod) {
-  int distaneone = distanceSensor.measureDistanceCm();
-  while (timer_channel_3 < 1500 && timer_channel_3 > 1600)
+void x_ultraconics()
+{
+  float XG_DATA_1 = X_ULTRASONICS.measureDistanceCm();
+  if (wait(TIME_DIFF))
   {
-    while (wait(timeperiod))
-    {
-      int distancetwo = distanceSensor.measureDistanceCm();
+    float GX_DIFF = (XG_DATA_1 - X_ULTRASONICS.measureDistanceCm());
+    if (GX_DIFF > DIFF_PARAM ) {
+      throttle = throttle + STEP_MOVE;
 
-      float trolinte = (distancetwo - distaneone) * 2000 / 300;
-      receiver_input_channel_3 = (int)trolinte;
     }
-  }
-}
-void stabilisaton_funcion_sqear( int timeperiod) {
-  int distaneone = distanceSensor.measureDistanceCm();
-  while (timer_channel_3 < 1500 && timer_channel_3 > 1600)
-  {
-    while (wait(timeperiod))
-    {
-      int distancetwo = distanceSensor.measureDistanceCm();
 
-      float add_error = (distancetwo - distaneone) * (distancetwo - distaneone);
-      receiver_input_channel_3 = receiver_input_channel_3 + add_error;
+
+    if (GX_DIFF < DIFF_PARAM_ ) {
+      throttle = throttle - STEP_MOVE;
     }
-  }
-}
-
-void stabilisaton_funcion_perentage(int timeperiod) {
-  int distaneone = distanceSensor.measureDistanceCm();
-  while (timer_channel_3 < 1500 && timer_channel_3 > 1600)
-  {
-    while (wait(timeperiod))
-    {
-      int distancetwo = distanceSensor.measureDistanceCm();
-
-      float add_error = (distancetwo - distaneone) * (distancetwo - distaneone);
-      receiver_input_channel_3 = receiver_input_channel_3 + add_error;
-    }
-  }
-}
-void gyroprint() {
-  Serial.print(acc_x);
-  Serial.print(", ");
-  Serial.print(acc_y);
-  Serial.print(", ");
-  Serial.print(acc_z);
-}
-void check_ultrasonics() {
-  if (ULTRASONIC_STBILISTATION_LINERAR == 1) {
-    stabilisaton_funcion_linear(TIMEPERIOD);
-  }
-  if (ULTRASONIC_STBILISTATION_SQERICAL == 1) {
-    stabilisaton_funcion_sqear(TIMEPERIOD);
-  }
-  if (ULTRASONIC_STBILISTATION_PROCENTAL == 1) {
-    stabilisaton_funcion_perentage(TIMEPERIOD);
-  }
-  if (ULTRASONIC_STBILISTATION_DISABLED == 1) {
-
-  }
-}
-void esc_calibrate() {
-  if (CALIBRATE_ESC == 1)
-  {
-    Serial.println("Calibrate ESC ....");
-    ESC1.write(180);
-    ESC2.write(180);
-    ESC3.write(180);
-    ESC4.write(180);
-    delay(2000);
-    ESC1.write(0);
-    ESC2.write(0);
-    ESC3.write(0);
-    ESC4.write(0);
-    Serial.println("Calibrate ESC ....OK");
   }
 }
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(57600);
   //Copy the EEPROM data for fast access data.
-  Serial.println("Copter Firmware for copter! This code based of YMCL software based (Link : https://github.com/gibsjose) Edited by Alex Zaslavskis");
-  gyro_address = 0x68;                                           //Store the gyro address in the variable.
-  Serial.println("Attached ESC....");
-  ESC1.attach(4, 1000, 2000);
-  ESC2.attach(5, 1000, 2000);
-  ESC3.attach(6, 1000, 2000);
-  ESC4.attach(7, 1000, 2000); // (pin, min pulse width, max pulse width in microseconds)
-  Serial.println("Attached ESC....OK");
-  esc_calibrate();
+  for (start = 0; start <= 35; start++)eeprom_data[start] = EEPROM.read(start);
+  start = 0;                                                                //Set start back to zero.
+  gyro_address = eeprom_data[32];                                           //Store the gyro address in the variable.
+
   Wire.begin();                                                             //Start the I2C as master.
 
   TWBR = 12;                                                                //Set the I2C clock speed to 400kHz.
@@ -188,26 +119,23 @@ void setup() {
 
   //Use the led on the Arduino for startup indication.
   digitalWrite(12, HIGH);                                                   //Turn on the warning led.
-  Serial.println("Turn on ........ LED");
+
   //Check the EEPROM signature to make sure that the setup program is executed.
+  while (eeprom_data[33] != 'J' || eeprom_data[34] != 'M' || eeprom_data[35] != 'B')delay(10);
 
   //The flight controller needs the MPU-6050 with gyro and accelerometer
   //If setup is completed without MPU-6050 stop the flight controller program
   if (eeprom_data[31] == 2 || eeprom_data[31] == 3)delay(10);
-  Serial.println("Check eeprom............");
-  Serial.println("Set gyro register..........");
+
   set_gyro_registers();                                                     //Set the specific gyro registers.
-  Serial.println("Set gyro register..........OK");
-  Serial.println("Set ports reciver............");
+
   for (cal_int = 0; cal_int < 1250 ; cal_int ++) {                          //Wait 5 seconds before continuing.
-    //Serial.println("5");
     PORTD |= B11110000;                                                     //Set digital poort 4, 5, 6 and 7 high.
     delayMicroseconds(1000);                                                //Wait 1000us.
-    // Serial.println("6");
     PORTD &= B00001111;                                                     //Set digital poort 4, 5, 6 and 7 low.
     delayMicroseconds(3000);                                                //Wait 3000us.
   }
-  Serial.println("Set ports reciver............");
+
   //Let's take multiple gyro data samples so we can determine the average gyro offset (calibration).
   for (cal_int = 0; cal_int < 2000 ; cal_int ++) {                          //Take 2000 readings for calibration.
     if (cal_int % 15 == 0)digitalWrite(12, !digitalRead(12));               //Change the led status to indicate calibration.
@@ -221,23 +149,18 @@ void setup() {
     PORTD &= B00001111;                                                     //Set digital poort 4, 5, 6 and 7 low.
     delay(3);                                                               //Wait 3 milliseconds before the next loop.
   }
-  Serial.println("Set ports reciver............OK");
-  Serial.println("Gyro_axis_call reciver............");
   //Now that we have 2000 measures, we need to devide by 2000 to get the average gyro offset.
   gyro_axis_cal[1] /= 2000;                                                 //Divide the roll total by 2000.
   gyro_axis_cal[2] /= 2000;                                                 //Divide the pitch total by 2000.
   gyro_axis_cal[3] /= 2000;                                                 //Divide the yaw total by 2000.
-  Serial.println("Gyro_axis_call reciver............OK");
-  Serial.println("Set ESC pins");
+
   PCICR |= (1 << PCIE0);                                                    //Set PCIE0 to enable PCMSK0 scan.
   PCMSK0 |= (1 << PCINT0);                                                  //Set PCINT0 (digital input 8) to trigger an interrupt on state change.
   PCMSK0 |= (1 << PCINT1);                                                  //Set PCINT1 (digital input 9)to trigger an interrupt on state change.
   PCMSK0 |= (1 << PCINT2);                                                  //Set PCINT2 (digital input 10)to trigger an interrupt on state change.
   PCMSK0 |= (1 << PCINT3);                                                  //Set PCINT3 (digital input 11)to trigger an interrupt on state change.
-  Serial.println("Set ESC pins..................OK");
-  Serial.println("Check Reciver .................");
-  //Wait until the receiver is active and the throtle is set to the lower position.
 
+  //Wait until the receiver is active and the throtle is set to the lower position.
   while (receiver_input_channel_3 < 990 || receiver_input_channel_3 > 1020 || receiver_input_channel_4 < 1400) {
     receiver_input_channel_3 = convert_receiver_channel(3);                 //Convert the actual receiver signals for throttle to the standard 1000 - 2000us
     receiver_input_channel_4 = convert_receiver_channel(4);                 //Convert the actual receiver signals for yaw to the standard 1000 - 2000us
@@ -252,32 +175,26 @@ void setup() {
       start = 0;                                                            //Start again at 0.
     }
   }
-
   start = 0;                                                                //Set start back to 0.
-  Serial.println("Check Reciver .................OK");
+
   //Load the battery voltage to the battery_voltage variable.
   //65 is the voltage compensation for the diode.
   //12.6V equals ~5V @ Analog 0.
   //12.6V equals 1023 analogRead(0).
   //1260 / 1023 = 1.2317.
   //The variable battery_voltage holds 1050 if the battery voltage is 10.5V.
-
-  Serial.println("Get Battary Voltage...............");
   battery_voltage = (analogRead(0) + 65) * 1.2317;
-  Serial.println("Get Battary Voltage...............OK");
-  Serial.println("Set micros timer...............");
+
   loop_timer = micros();                                                    //Set the timer for the next loop.
-  Serial.println("Set micros timer...............OK");
+
   //When everything is done, turn off the led.
-  digitalWrite(12, LOW);
-  Serial.println("SETUP DONE !");//Turn off the warning led.
+  digitalWrite(12, LOW);                                                    //Turn off the warning led.
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Main program loop
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void loop() {
-  gyroprint();
-  check_ultrasonics();
+
   //65.5 = 1 deg/sec (check the datasheet of the MPU-6050 for more information).
   gyro_roll_input = (gyro_roll_input * 0.7) + ((gyro_roll / 65.5) * 0.3);   //Gyro pid input is deg/sec.
   gyro_pitch_input = (gyro_pitch_input * 0.7) + ((gyro_pitch / 65.5) * 0.3);//Gyro pid input is deg/sec.
@@ -377,7 +294,7 @@ void loop() {
   }
 
   calculate_pid();                                                            //PID inputs are known. So we can calculate the pid output.
-  gyroprint();
+
   //The battery voltage is needed for compensation.
   //A complementary filter is used to reduce noise.
   //0.09853 = 0.08 * 1.2317.
@@ -511,6 +428,7 @@ ISR(PCINT0_vect) {
     last_channel_4 = 0;                                                     //Remember current input state.
     receiver_input[4] = current_time - timer_4;                             //Channel 4 is current_time - timer_4.
   }
+  x_ultraconics();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -519,9 +437,11 @@ ISR(PCINT0_vect) {
 void gyro_signalen() {
   //Read the MPU-6050
   if (eeprom_data[31] == 1) {
-    Wire.beginTransmission(gyro_address);                                   //Start communication with the gyro.
-    Wire.write(0x3B);                                                       //Start reading @ register 43h and auto increment with every read.
-    Wire.endTransmission();                                                 //End the transmission.
+    Wire.begin();                      // Initialize comunication
+    Wire.beginTransmission(0x68);       // Start communication with MPU6050 // MPU=0x68
+    Wire.write(0x6B);                  // Talk to the register 6B
+    Wire.write(0x00);                  // Make reset - place a 0 into the 6B register
+    Wire.endTransmission(true);        //end the transmission                                                       //Start reading @ register 43h and auto increment with every read.                                                 //End the transmission.
     Wire.requestFrom(gyro_address, 14);                                     //Request 14 bytes from the gyro.
 
     receiver_input_channel_1 = convert_receiver_channel(1);                 //Convert the actual receiver signals for pitch to the standard 1000 - 2000us.
@@ -638,7 +558,7 @@ void set_gyro_registers() {
   //Setup the MPU-6050
   if (eeprom_data[31] == 1) {
     Wire.beginTransmission(gyro_address);                                      //Start communication with the address found during search.
-    Wire.write(0x6B);                                                          //We want to write to the PWR_MGMT_1 register (6B hex)
+    Wire.write(0x68);                                                          //We want to write to the PWR_MGMT_1 register (6B hex)
     Wire.write(0x00);                                                          //Set the register bits as 00000000 to activate the gyro
     Wire.endTransmission();                                                    //End the transmission with the gyro.
 
