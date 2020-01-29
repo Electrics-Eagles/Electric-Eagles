@@ -6,6 +6,15 @@ https://profpv.ru/chto-takoe-pid-na-chto-vliyaet-i-kak-nastroit/
 https://www.youtube.com/watch?v=tgQDJ73w7Uc
 https://habr.com/ru/company/technoworks/blog/216437/
 https://github.com/it-workshop/Quadrocopter/wiki/Software
+https://habr.com/en/post/145991/
+https://habr.com/en/post/143388/
+https://multicopterwiki.ru/index.php/Теория_настройки_ПИД_/_PID
+https://clever.coex.tech/ru/pid_tuning.htmlw
+https://sites.google.com/site/webstm32/pid_reg
+https://habr.com/ru/post/227425/
+http://jsfiddle.net/limon_spb/ZPmPh/
+https://dspace.ucuenca.edu.ec/bitstream/123456789/21401/1/IEE_17_Romero%20et%20al.pdf
+
 --------------------------------------------------------PID---------------------------------------------------------
 --------------------------------------------------------Drone_making------------------------------------------------
 http://www.electronoobs.com/eng_robotica_tut6_1.php
