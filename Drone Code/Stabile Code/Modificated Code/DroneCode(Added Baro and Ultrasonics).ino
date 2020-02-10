@@ -28,9 +28,9 @@
 // Customize here pulse lengths as needed
 #define MIN_PULSE_LENGTH 1000 // Minimum pulse length in µs
 #define MAX_PULSE_LENGTH 2000 // Maximum pulse length in µs
-#define BARO_STABILITY 1
-#define ULTASONICS_SAFETY 1
-#define WORKING_MODE 1
+#define BARO_STABILITY 0
+#define ULTASONICS_SAFETY 0
+#define ULTROSONICS_WORKING_MODE 1
 #define interval 100
 // ---------------------------------------------------------------------------
 Servo motA, motB, motC, motD;
@@ -267,6 +267,7 @@ void loop() {
     Serial.println(gyro_yaw, 0);
 
   }
+  
   //65.5 = 1 deg/sec (check the datasheet of the MPU-6050 for more information).
   gyro_roll_input = (gyro_roll_input * 0.7) + ((gyro_roll / 65.5) * 0.3);   //Gyro pid input is deg/sec.
   gyro_pitch_input = (gyro_pitch_input * 0.7) + ((gyro_pitch / 65.5) * 0.3);//Gyro pid input is deg/sec.
