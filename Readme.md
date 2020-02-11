@@ -9,7 +9,7 @@ YMFC-AL Version 1.4
 Arduino IDE 1.8.10 and 1.0.6
 Sublime Text 3.22
 Python 3.7.6
-Java 13u09
+Java 11u06
 Deviot 
 Ardunio Nano v3 (CH340)
 Motors and ESC from DJI Phantom 1 (FC40)
