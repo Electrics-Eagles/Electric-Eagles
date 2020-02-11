@@ -106,8 +106,8 @@ float altitude_before;
 float baseline; // baseline pressure
 //code by alex5250
 void detect_object() {
-  float ultrasonics_input_data = distanceSensor.measureDistanceCm();
   if (ULTASONICS_SAFETY == 1) {
+    float ultrasonics_input_data = distanceSensor.measureDistanceCm();
     float estimated_value = ultrasonics_kalman.updateEstimate(ultrasonics_input_data);
     if (ultrasonics_input_data < 30 ) {
       float compensate = map(ultrasonics_input_data, 0, 30, 1000, 200);
