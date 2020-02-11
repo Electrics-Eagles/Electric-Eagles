@@ -1,6 +1,7 @@
-
-
-
+// Code is taken form YMFC-AL
+// Editted by Alex Zaslavkis fro Electrics Eagles.
+// Added a Kalman on gyro. Barometr support and also utrasonics safety.
+// Code written on wiring.( I understand what is a shit code . We need improve it to make it better.)
 #include <SFE_BMP180.h>
 #include <HCSR04.h>
 #include <SimpleKalmanFilter.h>
@@ -30,8 +31,10 @@
 #define MAX_PULSE_LENGTH 2000 // Maximum pulse length in µs
 #define BARO_STABILITY 0
 #define ULTASONICS_SAFETY 0
-#define ULTROSONICS_WORKING_MODE 1
+#define ULTROSONICS_WORKING_MODE 0
 #define interval 100
+#define MAX_PITCH_ANGLE 15
+#define MAX_ROLL_ANGLE 15
 #define DEBUG_MSG 1
 // ---------------------------------------------------------------------------
 Servo motA, motB, motC, motD;
@@ -54,10 +57,10 @@ float pid_i_gain_pitch = pid_i_gain_roll;  //Gain setting for the pitch I-contro
 float pid_d_gain_pitch = pid_d_gain_roll;  //Gain setting for the pitch D-controller.
 int pid_max_pitch = pid_max_roll;          //Maximum output of the PID-controller (+/-)
 
-float pid_p_gain_yaw = 4.0;                //Gain setting for the pitch P-controller. //4.0
-float pid_i_gain_yaw = 0.02;               //Gain setting for the pitch I-controller. //0.02
+float pid_p_gain_yaw = 0.0;                //Gain setting for the pitch P-controller. //4.0
+float pid_i_gain_yaw = 0.00;               //Gain setting for the pitch I-controller. //0.02
 float pid_d_gain_yaw = 0.0;                //Gain setting for the pitch D-controller.
-int pid_max_yaw = 400;                     //Maximum output of the PID-controller (+/-)
+int pid_max_yaw = 000;                     //Maximum output of the PID-controller (+/-)
 
 boolean auto_level = true;
 long alt_time_one ;
@@ -66,6 +69,11 @@ long stability_interval = 1000;
 // Code by alex5250
 
 SimpleKalmanFilter pressureKalmanFilter(1, 1, 0.01);
+SimpleKalmanFilter gyro_x(1, 1, 0.01);
+SimpleKalmanFilter gyro_y(1, 1, 0.01);
+SimpleKalmanFilter gyro_z(1, 1, 0.01);
+SimpleKalmanFilter acle_x(1, 1, 0.01);
+SimpleKalmanFilter acle_y(1, 1, 0.01);
 SFE_BMP180 pressure;
 // Code by alex5250
 //Code by alex 5250
@@ -152,7 +160,7 @@ void unlock_motors() {
   motD.writeMicroseconds(1000);
 }
 void setup() {
-  Serial.begin(57600);
+  if (DEBUG_MSG == 1)Serial.begin(57600);
   motA.attach(4, MIN_PULSE_LENGTH, MAX_PULSE_LENGTH);
   motB.attach(5, MIN_PULSE_LENGTH, MAX_PULSE_LENGTH);
   motC.attach(6, MIN_PULSE_LENGTH, MAX_PULSE_LENGTH);
@@ -215,7 +223,7 @@ void setup() {
   PCMSK0 |= (1 << PCINT3);                                                  //Set PCINT3 (digital input 11)to trigger an interrupt on state change.
 
   //Wait until the receiver is active and the throtle is set to the lower position.
-  Serial.println("I am ready");
+  if (DEBUG_MSG == 1) Serial.println("You are close to takeoff");
   while (receiver_input_channel_3 < 990 || receiver_input_channel_3 > 1020 || receiver_input_channel_4 < 1400) {
     receiver_input_channel_3 = convert_receiver_channel(3);                 //Convert the actual receiver signals for throttle to the standard 1000 - 2000us
     receiver_input_channel_4 = convert_receiver_channel(4);
@@ -248,7 +256,6 @@ void setup() {
   // Code by alex5250
   //When everything is done, turn off the led.
   digitalWrite(13, HIGH);
-  //unlock_motors();//Turn off the warning led.
   if (DEBUG_MSG == 1) {
     Serial.println("Data before takeoff");
     Serial.print("Distance to object : " );
@@ -286,12 +293,23 @@ void setup() {
 
 
   }
+  //unlock_motors();//Turn off the warning led.
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Main program loop
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void loop() {
   digitalWrite(13, LOW);
+
+  //65.5 = 1 deg/sec (check the datasheet of the MPU-6050 for more information).
+  float pithch = gyro_x.updateEstimate(gyro_pitch);
+  float roll = gyro_x.updateEstimate(gyro_roll);
+  float yaw = gyro_x.updateEstimate(gyro_yaw);
+
+  gyro_roll_input = (gyro_roll_input * 0.7) + ((roll / 65.5) * 0.3);   //Gyro pid input is deg/sec.
+  gyro_pitch_input = (gyro_pitch_input * 0.7) + ((pithch / 65.5) * 0.3);//Gyro pid input is deg/sec.
+  gyro_yaw_input = (gyro_yaw_input * 0.7) + ((yaw / 65.5) * 0.3);      //Gyro pid input is deg/sec.
+
   if (start == 2) {
 
     Serial.print(gyro_roll, 0);
@@ -308,12 +326,6 @@ void loop() {
 
   }
 
-  //65.5 = 1 deg/sec (check the datasheet of the MPU-6050 for more information).
-  gyro_roll_input = (gyro_roll_input * 0.7) + ((gyro_roll / 65.5) * 0.3);   //Gyro pid input is deg/sec.
-  gyro_pitch_input = (gyro_pitch_input * 0.7) + ((gyro_pitch / 65.5) * 0.3);//Gyro pid input is deg/sec.
-  gyro_yaw_input = (gyro_yaw_input * 0.7) + ((gyro_yaw / 65.5) * 0.3);      //Gyro pid input is deg/sec.
-
-
   ////////////////////////////////////////////////////////////////////////////////////////////////////
   //This is the added IMU code from the videos:
   //https://youtu.be/4BoIE8YQwM8
@@ -328,7 +340,12 @@ void loop() {
   //0.000001066 = 0.0000611 * (3.142(PI) / 180degr) The Arduino sin function is in radians
   angle_pitch -= angle_roll * sin(gyro_yaw * 0.000001066);                  //If the IMU has yawed transfer the roll angle to the pitch angel.
   angle_roll += angle_pitch * sin(gyro_yaw * 0.000001066);                  //If the IMU has yawed transfer the pitch angle to the roll angel.
-
+  float temp_x = acle_x.updateEstimate(acc_x);
+  float temp_y = acle_y.updateEstimate(acc_y);
+  float temp_z = acle_z.updateEstimate(acc_z);
+  acc_x = temp_x;
+  acc_y = temp_y;
+  acc_z = temp_z;
   //Accelerometer angle calculations
   acc_total_vector = sqrt((acc_x * acc_x) + (acc_y * acc_y) + (acc_z * acc_z)); //Calculate the total accelerometer vector.
 
@@ -346,8 +363,8 @@ void loop() {
   angle_pitch = angle_pitch * 0.9996 + angle_pitch_acc * 0.0004;            //Correct the drift of the gyro pitch angle with the accelerometer pitch angle.
   angle_roll = angle_roll * 0.9996 + angle_roll_acc * 0.0004;               //Correct the drift of the gyro roll angle with the accelerometer roll angle.
 
-  pitch_level_adjust = angle_pitch * 15;                                    //Calculate the pitch angle correction
-  roll_level_adjust = angle_roll * 15;                                      //Calculate the roll angle correction
+  pitch_level_adjust = angle_pitch * MAX_PITCH_ANGLE;                                    //Calculate the pitch angle correction
+  roll_level_adjust = angle_roll * MAX_ROLL_ANGLE;                                      //Calculate the roll angle correction
 
   if (!auto_level) {                                                        //If the quadcopter is not in auto-level mode
     pitch_level_adjust = 0;                                                 //Set the pitch angle correction to zero.
