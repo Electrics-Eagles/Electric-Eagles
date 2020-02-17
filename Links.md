@@ -30,3 +30,6 @@ https://www.youtube.com/watch?v=kyX9cRxJNdo
 https://www.youtube.com/watch?v=DYpHB-LfloI&t=4s
 http://www.brokking.net/ymfc-al_main.html
 --------------------------------------------------------Drone_making------------------------------------------------
+--------------------------------------------------------Usage of Drones---------------------------------------------
+https://www.dummies.com/consumer-electronics/drones/popular-uses-for-drones/
+
