@@ -1,0 +1,1 @@
+git config --global http.proxy http://192.168.48.1:3128
