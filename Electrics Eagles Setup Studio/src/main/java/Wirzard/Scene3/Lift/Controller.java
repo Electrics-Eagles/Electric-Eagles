@@ -1,10 +1,5 @@
 package Wirzard.Scene3.Lift;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
-
 import API.Custom.Logger.Java.Logger;
 import API.JavaFX.FXML_Loader.FXML_Loader;
 import API.ScanFXML_Files.ScanFXML;
@@ -18,6 +13,10 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaView;
 import javafx.util.Duration;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 import static Main_Window.Controller.main_wirzard_windows;
 

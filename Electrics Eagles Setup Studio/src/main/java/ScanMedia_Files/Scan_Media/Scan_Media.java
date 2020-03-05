@@ -13,6 +13,15 @@ public class Scan_Media {
         return dir.listFiles((somepath, name) -> name.toLowerCase().endsWith(".mp4"));
 
         }
+    public static File[] Scan_Code_Files(String path) throws IOException {
+        String dirPath = new File(path).getCanonicalPath();
+        System.out.println(dirPath);
+        dirPath.replace("\\", "/"); // Just use the existing variable
+        File dir = new File(dirPath);
+        //File[] files = dir.listFiles();
+        return dir.listFiles((somepath, name) -> name.toLowerCase().endsWith(".ino"));
+
+    }
 
     }
 

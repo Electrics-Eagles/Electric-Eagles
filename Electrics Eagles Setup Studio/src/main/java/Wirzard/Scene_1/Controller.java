@@ -18,9 +18,12 @@ import javafx.scene.input.MouseEvent;
 import API.JavaFX.FXML_Loader.FXML_Loader;
 import API.System.FileChooser.SelectFileChooser;
 import API.Varibles_Java.*;
+
+
+import static API.CloneCoreFromGitHub.CloneRepo.CloneRepo;
 import static Main_Window.Controller.main_wirzard_windows;
 
-public class Controller {
+public class Controller implements Runnable {
     @FXML // ResourceBundle that was given to the FXMLLoader
     private ResourceBundle resources;
 
@@ -57,6 +60,7 @@ public class Controller {
         Variables.Drone_Path=project_path.getText();
         Variables.Project_Descripton=project_description.getText();
         Variables.Fly_Mode=fly_mode.getValue();
+        new Thread(this).start();
 
     }
     @FXML
@@ -79,6 +83,15 @@ public class Controller {
             project_description.setText(Variables.Project_Descripton);
             fly_mode.setValue(Variables.Fly_Mode);
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void run() {
+        try {
+            CloneRepo();
+        } catch (  IOException e) {
             e.printStackTrace();
         }
     }

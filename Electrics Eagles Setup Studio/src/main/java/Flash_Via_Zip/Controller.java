@@ -1,15 +1,19 @@
 package Flash_Via_Zip;
 
 import API.System.FileChooser.SelectFileChooser;
+import API.Varibles_Java.Variables;
 import com.gluonhq.charm.glisten.control.ProgressBar;
+import javafx.fxml.FXML;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.fxml.FXML;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.shape.Circle;
-import javafx.scene.text.Text;
+
+import static API.Arduino.Flash.FlashAduino.upload_ino;
 
 public class Controller {
 
@@ -34,15 +38,20 @@ public class Controller {
     @FXML
     private Text path_to_zip;
     @FXML
-    void flash(MouseEvent event) {
-
-
+    void flash(MouseEvent event) throws IOException {
+        flash_circle.setFill(Color.YELLOW);
+        flash_stat.setText("10%");
+        upload_ino(path_to_zip.getText(), Variables.COM_PORTS[0]);
+        flash_circle.setFill(Color.GREEN);
+        flash_stat.setText("All done..");
+        flash_status.setProgress(1);
 
     }
 
     @FXML
     void path(MouseEvent event) throws IOException {
-        path_to_zip.setText( SelectFileChooser.FileChooser("ZIP",".").getAbsolutePath());
+        path_to_zip.setText( SelectFileChooser.FileChooser(".ino",".").getAbsolutePath());
+
     }
 
     @FXML // This method is called by the FXMLLoader when initialization is complete

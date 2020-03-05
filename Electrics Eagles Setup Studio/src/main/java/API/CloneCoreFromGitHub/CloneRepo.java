@@ -1,15 +1,15 @@
 package API.CloneCoreFromGitHub;
 
-import java.io.File;
+import API.System.Call.CMD.Command;
 
-import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.errors.GitAPIException;
+import java.io.File;
+import java.io.IOException;
 
 import static API.Varibles_Java.Variables.Drone_Path;
 
 public class CloneRepo {
     static String Dir_Check() {
-        File Dir= new File(Drone_Path + "//DroneCore//Kernel");
+        File Dir= new File(Drone_Path + "//DroneCore");
         if(Dir.exists()) {
             return Dir.getAbsolutePath();
         }
@@ -18,14 +18,15 @@ public class CloneRepo {
             return Dir.getAbsolutePath();
         }
     }
-    public static void CloneRepo() throws GitAPIException {
-
-        Git git = Git.cloneRepository()
-                .setURI( "https://github.com/alex5250/ElectricsEaglesCore" )
-                .setDirectory(new File(Dir_Check()))
-                .call();
-
+    public static void CloneRepo() throws IOException {
+System.out.println(Command.CMD_COMMAND("git"));
+  if(!  Command.CMD_COMMAND("git").contains("is not recognized")) {
+      Command.CMD_COMMAND("git clone https://github.com/alex5250/ElectricsEaglesCore "+Dir_Check());
+  }
 
 
+    }
+    public static void main(String[] args) throws IOException {
+        CloneRepo();
     }
 }

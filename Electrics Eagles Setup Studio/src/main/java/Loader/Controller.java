@@ -1,16 +1,20 @@
 package Loader;
 
-import java.io.IOException;
-
-import API.Python.Script.Runner.Python_System_Check;
+import API.Custom.Logger.Java.Logger;
+import API.Detect_Arduino.Detector;
 import API.JavaFX.FXML_Loader.FXML_Loader;
+import API.Varibles_Java.Variables;
 import com.gluonhq.charm.glisten.control.ProgressBar;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import jep.JepException;
 
+import java.io.IOException;
+
+import static API.Python.Script.Runner.Python_Script_Runner.Check_Python;
 import static Loader.Main.load_screen;
 
 public class Controller implements Runnable {
@@ -50,6 +54,14 @@ public class Controller implements Runnable {
             e.printStackTrace();
         }
         load_text.setText("Run modules.......................");
+        load_text.setText("Detect boards.......................");
+        Variables.COM_PORTS= Detector.detect_arduino();
+        try {
+            Logger.INFO("Found boards"+Variables.COM_PORTS.toString(),"log.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         try {
             Thread.sleep(1400);
         } catch (InterruptedException e) {
@@ -58,7 +70,7 @@ public class Controller implements Runnable {
         load_text.setText("Run dependencies...................");
         try {
             Thread.sleep(1400);
-            Python_System_Check.Python_Check();
+            Check_Python();
             load_text.setText("Run main application................");
             Platform.runLater(() -> {
 
@@ -68,7 +80,7 @@ public class Controller implements Runnable {
                     e.printStackTrace();
                 }
             });
-        } catch (InterruptedException | IOException e) {
+        } catch (InterruptedException | IOException | JepException e) {
             e.printStackTrace();
         }
     }

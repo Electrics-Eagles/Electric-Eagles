@@ -20,6 +20,10 @@ public static float d_gain_yaw;
 public static boolean AutoLevel;
 public static boolean  ultrosonics ;
 public static boolean barometr;
+public static String[] COM_PORTS;
+
+
+
 
 }
 

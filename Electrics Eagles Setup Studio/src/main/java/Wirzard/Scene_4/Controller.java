@@ -3,27 +3,27 @@ package Wirzard.Scene_4;
 import API.Custom.Logger.Java.Logger;
 import API.JavaFX.FXML_Loader.FXML_Loader;
 import API.ScanFXML_Files.ScanFXML;
+import API.Varibles_Java.Variables;
 import com.gluonhq.charm.glisten.control.ProgressBar;
+import com.jfoenix.controls.JFXButton;
+import javafx.fxml.FXML;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import com.jfoenix.controls.JFXButton;
-import javafx.application.Platform;
-import javafx.fxml.FXML;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.VBox;
-import javafx.scene.shape.Circle;
-import javafx.scene.text.Text;
-import org.eclipse.jgit.api.errors.GitAPIException;
-
-import static API.CloneCoreFromGitHub.CloneRepo.CloneRepo;
+import static API.Arduino.Flash.FlashAduino.upload;
+import static API.Varibles_Java.Variables.COM_PORTS;
 import static Main_Window.Controller.main_wirzard_windows;
 import static Main_Window.Controller.runned_not_int_wirzard;
 
-public class Controller implements Runnable {
+public class Controller  {
     @FXML
     private VBox vbox;
     @FXML // ResourceBundle that was given to the FXMLLoader
@@ -62,8 +62,13 @@ public class Controller implements Runnable {
     }
 
     @FXML
-    void flash_drone(MouseEvent event) {
-
+    void flash_drone(MouseEvent event) throws IOException {
+        upload(Variables.Drone_Path+"//DroneCore//DroneCore.ino",COM_PORTS[0]);
+        circle_flashed.setFill(Color.GREEN);
+        flash_status.setText("All done..");
+        clone_fimware_progress_bar.setProgress(1);
+        text_percent.setText("100%");
+        text_percent1.setText("100%");
     }
 
     @FXML
@@ -73,27 +78,14 @@ public class Controller implements Runnable {
         Logger.INFO("Run an Wirzard Step 2", "log.txt");
     }
 
-    @Override
-    public void run() {
-        try {
-            Logger.DEBUG("Clone an Core", "log.txt");
-            CloneRepo();
-            Platform.runLater(() ->
-            {
-                clone_fimware_progress_bar.setProgress(1);
-                text_percent.setText("100%");
 
-            });
-        } catch (GitAPIException | IOException e) {
-            e.printStackTrace();
-        }
-    }
+
 
 
     @FXML
         // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
-        new Thread(this).start();
+
         if (runned_not_int_wirzard) {
             back_button.setVisible(false);
             next_button.setVisible(false);
