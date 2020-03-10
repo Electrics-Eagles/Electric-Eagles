@@ -171,18 +171,16 @@ void setup() {
   loop_timer = micros();                                                    //Set the timer for the next loop.
 
   //When everything is done, turn off the led.
-  digitalWrite(12, LOW);                                                    //Turn off the warning led.
+  digitalWrite(12, LOW); 
+  Serial.println("ff");//Turn off the warning led.
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Main program loop
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void loop() {
+
   if (start == 2) {
-    Serial.print(gyro_axis[0]);
-    Serial.print(",");
-    Serial.print(gyro_axis[1]);
-    Serial.print(",");
-    Serial.println(gyro_axis[2]);
+
   }
   //65.5 = 1 deg/sec (check the datasheet of the MPU-6050 for more information).
   gyro_roll_input = (gyro_roll_input * 0.7) + ((gyro_roll / 65.5) * 0.3);   //Gyro pid input is deg/sec.
@@ -235,7 +233,6 @@ void loop() {
   //When yaw stick is back in the center position start the motors (step 2).
   if (start == 1 && receiver_input_channel_3 < 1050 && receiver_input_channel_4 > 1450) {
     start = 2;
-    correct_gps();
     angle_pitch = angle_pitch_acc;                                          //Set the gyro pitch angle equal to the accelerometer pitch angle when the quadcopter is started.
     angle_roll = angle_roll_acc;                                            //Set the gyro roll angle equal to the accelerometer roll angle when the quadcopter is started.
     gyro_angles_set = true;                                                 //Set the IMU started flag.
@@ -254,6 +251,7 @@ void loop() {
   //The PID set point in degrees per second is determined by the roll receiver input.
   //In the case of deviding by 3 the max roll rate is aprox 164 degrees per second ( (500-8)/3 = 164d/s ).
   pid_roll_setpoint = 0;
+  correct_gps();
   //We need a little dead band of 16us for better results.
   if (receiver_input_channel_1 > 1508)pid_roll_setpoint = receiver_input_channel_1 - 1508;
   else if (receiver_input_channel_1 < 1492)pid_roll_setpoint = receiver_input_channel_1 - 1492;

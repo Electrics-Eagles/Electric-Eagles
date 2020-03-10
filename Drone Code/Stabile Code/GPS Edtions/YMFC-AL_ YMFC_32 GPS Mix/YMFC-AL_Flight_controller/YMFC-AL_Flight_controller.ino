@@ -185,11 +185,11 @@ void setup() {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void loop() {
   if (start == 2) {
-    Serial.print(gyro_axis[0]);
-    Serial.print(",");
-    Serial.print(gyro_axis[1]);
-    Serial.print(",");
-    Serial.println(gyro_axis[2]);
+    //Serial.print(gyro_axis[0]);
+    //Serial.print(",");
+    //Serial.print(gyro_axis[1]);
+    //Serial.print(",");
+    Serial.println(gps_roll_adjust);
   }
   //65.5 = 1 deg/sec (check the datasheet of the MPU-6050 for more information).
   gyro_roll_input = (gyro_roll_input * 0.7) + ((gyro_roll / 65.5) * 0.3);   //Gyro pid input is deg/sec.

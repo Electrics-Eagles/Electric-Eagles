@@ -192,8 +192,8 @@ void read_gps(void) {
         gps_pitch_adjust = 0;
       }
       if (SERIAL_DEBUG == 1) {
-        Serial.println(gps_roll_adjust);
-        Serial.println(gps_pitch_adjust);
+        Serial.println(gps_pitch_adjust_north);
+        Serial.println();
       }
       //Limit the maximum correction to 300. This way we still have full controll with the pitch and roll stick on the transmitter.
       if (gps_roll_adjust > 300) gps_roll_adjust = 300;

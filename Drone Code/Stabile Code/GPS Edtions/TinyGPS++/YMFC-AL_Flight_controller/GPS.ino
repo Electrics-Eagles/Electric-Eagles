@@ -26,20 +26,25 @@ void perpare_gps(void)
 }
 void read_one() {
   while (ss.available() > 0)
-    if (gps.encode(ss.read()) && gps.location.isValid()) {
+    if (gps.encode(ss.read())) {
       {
-        if (longitude < 0 )  longiude_east = true;
-        latiude = (gps.location.lat() * 100000);
-        longitude = (gps.location.lng() * 100000);
+        if (gps.location.isValid()) {
+          if (longitude < 0 )  longiude_east = true;
+          latiude = (gps.location.lat() * 100000);
+          longitude = (gps.location.lng() * 100000);
+          Serial.println(gps.location.lat());
+        }
       }
     }
 }
 void read_two() {
   while (ss.available() > 0)
-    if (gps.encode(ss.read()) && gps.location.isValid()) {
+    if (gps.encode(ss.read())) {
+      if (gps.location.isValid()) {
         latiude_now = (gps.location.lat() * 100000);
         longitude_now = (gps.location.lng() * 100000);
-      
+        Serial.println(gps.location.lat());
+      }
     }
 }
 void correct_gps(void)
@@ -51,12 +56,9 @@ void correct_gps(void)
     lat_error_buffer = 0;
   }
   read_one();
-  unsigned long currentMillis = millis();
-  if (currentMillis - gps_milis >= gps_interval) {
-    // save the last time you blinked the LED
-    gps_milis = currentMillis;
-    read_two();
-  }
+
+  read_two();
+
   long_error = (longitude_now - longitude) * 10 ;
   lat_error = (latiude_now - latiude) * 10;
   long_error_buffer = +long_error;
@@ -66,13 +68,13 @@ void correct_gps(void)
   gps_roll_adjust_north = (float)long_error * gps_p_gain + (float)long_error * gps_d_gain;
   if (!latitude_north)gps_pitch_adjust_north *= -1;                                                   //Invert the pitch adjustmet because the quadcopter is flying south of the equator.
   if (!longiude_east)gps_roll_adjust_north *= -1;                                                     //Invert the roll adjustmet because the quadcopter is flying west of the prime meridian.
-  if(GPS_ON == 1 ) {
-  gps_roll_adjust = ((float)gps_roll_adjust_north * cos(angle_yaw * 0.017453)) + ((float)gps_pitch_adjust_north * cos((angle_yaw - 90) * 0.017453));
-  gps_pitch_adjust = ((float)gps_pitch_adjust_north * cos(angle_yaw * 0.017453)) + ((float)gps_roll_adjust_north * cos((angle_yaw + 90) * 0.017453));
+  if (GPS_ON == 1 ) {
+    gps_roll_adjust = ((float)gps_roll_adjust_north);
+    gps_pitch_adjust = ((float)gps_pitch_adjust_north);
   }
   else {
-    gps_roll_adjust=0;
-    gps_pitch_adjust=0;
+    gps_roll_adjust = 0;
+    gps_pitch_adjust = 0;
   }
   //Limit the maximum correction to 300. This way we still have full controll with the pitch and roll stick on the transmitter.
   if (gps_roll_adjust > 300) gps_roll_adjust = 300;
@@ -80,8 +82,8 @@ void correct_gps(void)
   if (gps_pitch_adjust > 300) gps_pitch_adjust = 300;
   if (gps_pitch_adjust < -300) gps_pitch_adjust = -300;
   if (SERIAL_DEBUG == 1) {
-    Serial.print(gps_roll_adjust, 6);
-    Serial.print(",");
-    Serial.println(gps_pitch_adjust, 6);
+    // Serial.print(gps_roll_adjust, 6);
+    //Serial.print(",");
+    //Serial.println(gps_pitch_adjust, 6);
   }
 }
