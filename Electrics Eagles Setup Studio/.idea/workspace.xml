@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="20b502ee-66ea-463b-9181-9805d1c5b9df" name="Default Changelist" comment="" />
+    <list default="true" id="20b502ee-66ea-463b-9181-9805d1c5b9df" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/Electrics Eagles Setup Studio.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -39,7 +45,7 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/null/DroneCore" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="ProjectId" id="1Xj0WRzp0JIY3EzxZ7WEILanpBo" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -54,9 +60,10 @@
     <property name="Repository.Attach.JavaDocs" value="false" />
     <property name="Repository.Attach.Sources" value="false" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_directory_selection" value="$PROJECT_DIR$/src/main/java/Wirzard/Scene3" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/resources/Imanges" />
-    <property name="project.structure.last.edited" value="Libraries" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
@@ -262,11 +269,12 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="677" y="349" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/0.0.1920.1040@0.0.1920.1040" timestamp="1583399503131" />
-    <state x="500" y="130" key="FileChooserDialogImpl" timestamp="1582232670648">
-      <screen x="0" y="0" width="1707" height="1027" />
+    <state x="375" y="117" key="FileChooserDialogImpl" timestamp="1583782578968">
+      <screen x="0" y="30" width="1280" height="690" />
     </state>
     <state x="375" y="86" key="FileChooserDialogImpl/0.0.1280.680@0.0.1280.680" timestamp="1581551730092" />
     <state x="500" y="130" key="FileChooserDialogImpl/0.0.1707.1027@0.0.1707.1027" timestamp="1582232670648" />
+    <state x="375" y="117" key="FileChooserDialogImpl/0.30.1280.690@0.30.1280.690" timestamp="1583782578968" />
     <state width="1877" height="111" key="GridCell.Tab.0.bottom" timestamp="1583399917885">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -311,23 +319,25 @@
     </state>
     <state width="1237" height="182" key="GridCell.Tab.1.right/0.0.1280.680@0.0.1280.680" timestamp="1583241547219" />
     <state width="1663" height="342" key="GridCell.Tab.1.right/0.0.1707.1027@0.0.1707.1027" timestamp="1582324049900" />
-    <state x="151" y="0" key="SettingsEditor" timestamp="1583235938911">
-      <screen x="0" y="0" width="1280" height="680" />
+    <state x="151" y="30" width="975" height="690" key="SettingsEditor" timestamp="1583782581680">
+      <screen x="0" y="30" width="1280" height="690" />
     </state>
     <state x="151" y="0" key="SettingsEditor/0.0.1280.680@0.0.1280.680" timestamp="1583235938911" />
     <state x="227" y="0" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1583014996144" />
+    <state x="151" y="30" width="975" height="690" key="SettingsEditor/0.30.1280.690@0.30.1280.690" timestamp="1583782581680" />
     <state x="456" y="122" key="chooseDestDirectoryDialog" timestamp="1583396960909">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="456" y="122" key="chooseDestDirectoryDialog/0.0.1280.680@0.0.1280.680" timestamp="1583396960909" />
     <state x="608" y="184" key="chooseDestDirectoryDialog/0.0.1707.1027@0.0.1707.1027" timestamp="1582321876370" />
     <state x="684" y="186" key="chooseDestDirectoryDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1582582212713" />
-    <state x="349" y="169" key="com.intellij.ide.util.TipDialog" timestamp="1583396531685">
-      <screen x="0" y="0" width="1280" height="680" />
+    <state x="349" y="201" key="com.intellij.ide.util.TipDialog" timestamp="1583782518819">
+      <screen x="0" y="30" width="1280" height="690" />
     </state>
     <state x="349" y="169" key="com.intellij.ide.util.TipDialog/0.0.1280.680@0.0.1280.680" timestamp="1583396531685" />
     <state x="465" y="255" key="com.intellij.ide.util.TipDialog/0.0.1707.1027@0.0.1707.1027" timestamp="1582404314513" />
     <state x="523" y="253" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1583193454993" />
+    <state x="349" y="201" key="com.intellij.ide.util.TipDialog/0.30.1280.690@0.30.1280.690" timestamp="1583782518819" />
     <state x="370" y="243" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD" timestamp="1582643572654">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
