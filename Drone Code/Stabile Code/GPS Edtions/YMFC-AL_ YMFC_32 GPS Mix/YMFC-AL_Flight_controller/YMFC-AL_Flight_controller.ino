@@ -35,8 +35,7 @@ float gps_d_gain = 6.5;
 #define SERIAL_DEBUG 1 // turns serial output
 #define GPS_ON 1 // turns gps stability
 #define BUZZER_PIN 12
-
-#include <Wire.h>                          //Include the Wire.h library so we can communicate with the gyro.
+//#include <Wire.h>                          //Include the Wire.h library so we can communicate with the gyro.
 #include <EEPROM.h>                        //Include the EEPROM.h library so we can store information onto the EEPROM
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -189,6 +188,7 @@ void loop() {
     //Serial.print(",");
     //Serial.print(gyro_axis[1]);
     //Serial.print(",");
+    read_gps();
     Serial.println(gps_roll_adjust);
   }
   //65.5 = 1 deg/sec (check the datasheet of the MPU-6050 for more information).

@@ -4,11 +4,13 @@
 //In this part the GPS module is setup and read.
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+#include <SoftwareSerial.h>
 
-#include <AltSoftSerial.h>
-static const int RXPin = 2, TXPin = 3;
-static const uint32_t GPSBaud = 9600;
-AltSoftSerial  gps_serial(RXPin, TXPin);
+
+// The serial connection to the GPS device
+SoftwareSerial gps_serial(2, 3);
+
+
 
 void make_gps_ok_sound() {
   tone(BUZZER_PIN, 100);
@@ -193,7 +195,7 @@ void read_gps(void) {
       }
       if (SERIAL_DEBUG == 1) {
         Serial.println(gps_pitch_adjust_north);
-        Serial.println();
+        Serial.println(gps_roll_adjust_north);
       }
       //Limit the maximum correction to 300. This way we still have full controll with the pitch and roll stick on the transmitter.
       if (gps_roll_adjust > 300) gps_roll_adjust = 300;

@@ -1,3 +1,5 @@
+#include <TinyGPS++.h>
+
 ///////////////////////////////////////////////////////////////////////////////////////
 //Terms of use
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -40,6 +42,19 @@ boolean auto_level = true;                 //Auto level on (true) or off (false)
 boolean ultrasonics = true;
 #define SERIAL_DEBUG 1 // turns serial output
 #define GPS_ON 1 // turns gps stability
+#define SERIAL_DEBUG 1 // turns serial output
+#define GPS_ON 1 // turns gps stability
+
+static const int RXPin = 2, TXPin = 3;
+static const uint32_t GPSBaud = 9600;
+
+unsigned long gpspreviousMillis = 0;        // will store last time LED was updated
+const long gpsinterval = 1000;           // interval at which to blink (milliseconds)
+// The TinyGPS++ object
+TinyGPSPlus gps;
+
+
+int clicker = 0;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Declaring global variables
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -84,10 +99,74 @@ const long gps_interval = 1000;           // interval at which to blink (millise
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Setup routine
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void read_one() {
+  while (Serial.available() > 0)
+    if (gps.encode(Serial.read()) && gps.location.isValid()) {
+      {
+        if (longitude < 0 )  longiude_east = true;
+        latiude = (gps.location.lat() * 100000);
+        longitude = (gps.location.lng() * 100000);
+      }
+    }
+}
+
+void read_two() {
+  while (Serial.available() > 0)
+    if (gps.encode(Serial.read()) && gps.location.isValid()) {
+        latiude_now = (gps.location.lat() * 100000);
+        longitude_now = (gps.location.lng() * 100000);
+      
+    }
+}
+void gps_error(void)
+{
+  if (clicker > 10) {
+    long_error = long_error_buffer / 10;
+    lat_error = lat_error_buffer / 10;
+    long_error_buffer = 0;
+    lat_error_buffer = 0;
+  }
+  read_one();
+  unsigned long currentMillis = millis();
+  if (currentMillis - gpspreviousMillis >= gpsinterval) {
+    // save the last time you blinked the LED
+    gpspreviousMillis = currentMillis;
+    read_two();
+  }
+  long_error = (longitude_now - longitude) * 10 ;
+  lat_error = (latiude_now - latiude) * 10;
+  long_error_buffer = +long_error;
+  lat_error_buffer = +lat_error;
+  
+  clicker++;
+  gps_pitch_adjust_north = (float)lat_error * gps_p_gain + (float)lat_error * gps_d_gain;
+  gps_roll_adjust_north = (float)long_error * gps_p_gain + (float)long_error * gps_d_gain;
+  if (!latitude_north)gps_pitch_adjust_north *= -1;                                                   //Invert the pitch adjustmet because the quadcopter is flying south of the equator.
+  if (!longiude_east)gps_roll_adjust_north *= -1;                                                     //Invert the roll adjustmet because the quadcopter is flying west of the prime meridian.
+  if(GPS_ON == 1 ) {
+  gps_roll_adjust = ((float)gps_roll_adjust_north * cos(angle_yaw * 0.017453)) + ((float)gps_pitch_adjust_north * cos((angle_yaw - 90) * 0.017453));
+  gps_pitch_adjust = ((float)gps_pitch_adjust_north * cos(angle_yaw * 0.017453)) + ((float)gps_roll_adjust_north * cos((angle_yaw + 90) * 0.017453));
+  }
+  else {
+    gps_roll_adjust=0;
+    gps_pitch_adjust=0;
+  }
+  //Limit the maximum correction to 300. This way we still have full controll with the pitch and roll stick on the transmitter.
+  if (gps_roll_adjust > 300) gps_roll_adjust = 300;
+  if (gps_roll_adjust < -300) gps_roll_adjust = -300;
+  if (gps_pitch_adjust > 300) gps_pitch_adjust = 300;
+  if (gps_pitch_adjust < -300) gps_pitch_adjust = -300;
+  latiude=latiude_now;
+  longitude=longitude_now;
+  
+  if (SERIAL_DEBUG == 1) {
+    
+  }
+}
 void setup() {
-  Serial.begin(57600);
+  Serial.begin(9600);
   //Copy the EEPROM data for fast access data.
-  perpare_gps();
+
   for (start = 0; start <= 35; start++)eeprom_data[start] = EEPROM.read(start);
   start = 0;                                                                //Set start back to zero.
   gyro_address = eeprom_data[32];                                           //Store the gyro address in the variable.
@@ -171,8 +250,8 @@ void setup() {
   loop_timer = micros();                                                    //Set the timer for the next loop.
 
   //When everything is done, turn off the led.
-  digitalWrite(12, LOW); 
-  Serial.println("ff");//Turn off the warning led.
+  digitalWrite(12, LOW);
+
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Main program loop
@@ -251,7 +330,7 @@ void loop() {
   //The PID set point in degrees per second is determined by the roll receiver input.
   //In the case of deviding by 3 the max roll rate is aprox 164 degrees per second ( (500-8)/3 = 164d/s ).
   pid_roll_setpoint = 0;
-  correct_gps();
+  gps_error();
   //We need a little dead band of 16us for better results.
   if (receiver_input_channel_1 > 1508)pid_roll_setpoint = receiver_input_channel_1 - 1508;
   else if (receiver_input_channel_1 < 1492)pid_roll_setpoint = receiver_input_channel_1 - 1492;
