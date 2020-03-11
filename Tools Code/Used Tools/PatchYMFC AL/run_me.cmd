@@ -1,0 +1,1 @@
+java --module-path \JavaFX11\lib --add-modules=javafx.controls,javafx.fxml,javafx.web,javafx.media -jar "C:\Users\Alex\Documents\GitHub\Electric-Eagles\Tools Code\Used Tools\PatchYMFC AL\PatchYMFC-AL.jar"
