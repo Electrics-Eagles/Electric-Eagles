@@ -10,8 +10,7 @@ import java.io.IOException;
 public  class PacketAPI {
     static Arduino arduino_board;
 
-    public PacketAPI() throws IOException {
-    }
+   
 
     public static void usingBufferedWritter(String textToAppend) throws IOException, IOException  {
         BufferedWriter writer = new BufferedWriter(
