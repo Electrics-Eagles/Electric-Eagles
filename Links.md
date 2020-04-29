@@ -14,8 +14,10 @@ https://sites.google.com/site/webstm32/pid_reg
 https://habr.com/ru/post/227425/
 http://jsfiddle.net/limon_spb/ZPmPh/
 https://dspace.ucuenca.edu.ec/bitstream/123456789/21401/1/IEE_17_Romero%20et%20al.pdf
+http://isd-soft.com/tech_blog/tuning-pid-regulator/
 
 --------------------------------------------------------PID---------------------------------------------------------
+
 --------------------------------------------------------Drone_making------------------------------------------------
 http://www.electronoobs.com/eng_robotica_tut6_1.php
 http://andrew.gibiansky.com/downloads/pdf/Quadcopter%20Dynamics,%20Simulation,%20and%20Control.pdf
@@ -32,4 +34,6 @@ http://www.brokking.net/ymfc-al_main.html
 --------------------------------------------------------Drone_making------------------------------------------------
 --------------------------------------------------------Usage of Drones---------------------------------------------
 https://www.dummies.com/consumer-electronics/drones/popular-uses-for-drones/
-
+--------------------------------------------------------Drone phyics------------------------------------------------
+https://www.quora.com/Why-cant-all-the-motors-of-a-quadcopter-rotate-in-the-same-direction
+--------------------------------------------------------------------------------------------------------------------
