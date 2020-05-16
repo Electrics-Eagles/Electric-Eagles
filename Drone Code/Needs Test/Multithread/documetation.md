@@ -28,5 +28,5 @@ void loop(){
 	// checks if thread should run
 	if(myThread.shouldRun())
 		myThread.run();
-} ````
+}
 
