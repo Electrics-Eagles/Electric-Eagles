@@ -1,5 +1,5 @@
 Describe and documetation of this code: https://github.com/ivanseidel/ArduinoThread (about thread function/class describe). Thanks Ivan Seidel!
-In callback of function for manipalation thread, don't use function delay(), because the task will block. Using void Thread::setInterval(int time) to prevent to block next task; 
+In callback of function for manipulation thread, don't use function delay(), because the task will block. Using void Thread::setInterval(int time) to prevent to block next task; 
 If you want few thread and run all equal time, to you need using ThreadController class and add using method of this class .add(). 
 Minimal using code for running thread.
 
@@ -13,7 +13,7 @@ Thread myThread = Thread();
 
 // callback for myThread
 void niceCallback() {
-
+   // add code of task in this thread
 }
 
 void setup() {
