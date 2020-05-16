@@ -2,7 +2,7 @@ Describe and documetation of this code: https://github.com/ivanseidel/ArduinoThr
 In callback of function for manipalation thread, don't use function delay(), because the task will block. Using void Thread::setInterval(int time) to prevent to block next task;
 Minimal using code for running thread. 
 
-````C++
+```C++
 
 #include <Thread.h>
 int ledPin = 13;
