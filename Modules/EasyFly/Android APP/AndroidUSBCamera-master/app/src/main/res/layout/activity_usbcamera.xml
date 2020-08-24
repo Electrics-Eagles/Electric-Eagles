@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/value"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ff000000"
+    tools:context=".view.USBCameraActivity"
+    tools:ignore="MergeRootFrame">
+
+
+    <com.serenegiant.usb.widget.UVCCameraTextureView
+        android:id="@+id/camera_view"
+        android:layout_width="729dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="center"
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="0dp" />
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#464646"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="289dp"
+        android:layout_height="51dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="122dp"
+        android:layout_marginEnd="319dp"
+        android:fontFamily="sans-serif-black"
+        android:text="TextView"
+        android:textSize="36dp" />
+
+
+
+
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="203dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="152dp"
+        android:layout_marginBottom="4dp"
+        android:fontFamily="sans-serif-black"
+        android:text="TextView"
+        android:textSize="36dp" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="0dp"
+        android:fontFamily="sans-serif-black"
+        android:text="TextView"
+        android:textSize="36dp" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="186dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="358dp"
+        android:layout_marginBottom="-2dp"
+        android:fontFamily="sans-serif-black"
+        android:text="TextView"
+        android:textSize="36dp" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="185dp"
+        android:layout_height="46dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="546dp"
+        android:layout_marginBottom="0dp"
+        android:fontFamily="sans-serif-black"
+        android:text="TextView"
+        android:textSize="36dp" />
+
+    <org.osmdroid.views.MapView
+        android:id="@+id/mapview"
+        tilesource="Mapnik"
+        android:layout_width="236dp"
+        android:layout_height="150dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="486dp"
+        android:layout_marginEnd="9dp"
+        android:layout_marginBottom="208dp" />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="152dp"
+        android:layout_height="49dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="8dp"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="130dp"
+        android:layout_height="53dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="181dp"
+        android:text="TextView" />
+
+
+</RelativeLayout>

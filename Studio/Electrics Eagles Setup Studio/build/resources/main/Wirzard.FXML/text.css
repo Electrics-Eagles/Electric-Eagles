@@ -1,0 +1,9 @@
+.text-field {
+    -fx-background-color: transparent ;
+    -fx-border-width: 1 1 1 1; -fx-border-color: transparent transparent black transparent;
+    -fx-border-style: solid;
+
+}
+.text-field:focused {
+  -fx-border-width: 1 1 1 1; -fx-border-color: transparent transparent #141491 transparent;
+}

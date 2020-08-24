@@ -1,0 +1,75 @@
+/*
+--add-modules
+javafx.base,javafx.graphics
+-p
+\javafx-sdk-13.0.2\lib\javafx.base.jar
+:\javafx-sdk-13.0.2\lib\javafx.graphics.jar
+ */
+
+plugins {
+    id 'java'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.8'
+    id 'org.javamodularity.moduleplugin' version "1.5.0"
+    id 'org.beryx.jlink' version '2.17.2'
+    id 'com.gluonhq.client-gradle-plugin' version '0.0.11'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.11
+
+repositories {
+    mavenCentral()
+   jcenter()
+    maven {
+        url 'http://nexus.gluonhq.com/nexus/content/repositories/releases'
+    }
+}
+
+javafx {
+    version = "11.0.2"
+    modules = [ 'javafx.controls','javafx.fxml','javafx.base','javafx.graphics','javafx.media' ,'javafx.web'] // you can add 'javafx.fxml', ...
+}
+
+
+dependencies {
+
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile group: 'com.jfoenix', name: 'jfoenix', version: '9.0.9'
+    compile group: 'com.gluonhq', name: 'charm-glisten', version: '6.0.2'
+    compile group: 'black.ninia', name: 'jep', version: '3.9.0'
+    compile group: 'org.scream3r', name: 'jssc', version: '2.8.0'
+    compile group: 'org.apache.ant', name: 'ant-compress', version: '1.5'
+    compile group: 'net.lingala.zip4j', name: 'zip4j', version: '2.5.2'
+    compile 'com.fazecast:jSerialComm:[2.0.0,3.0.0)'
+    compile group: 'com.gluonhq.attach', name: 'util', version: '4.0.1.1'
+    //compile group: 'net.sf.json-lib', name: 'json-lib', version: '2.4'
+    compile 'net.sf.json-lib:json-lib:2.4:jdk15'
+    compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+    compile group: 'commons-io', name: 'commons-io', version: '2.6'
+
+
+}
+
+
+
+
+
+jlink {
+    launcher {
+        //noinspection GroovyAssignabilityCheck
+        options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
+        name = 'Electrics Eagles Configurator'
+        addExtraDependencies("javafx")
+
+
+    }
+
+}
+
+mainClassName = "app.Loader.Main";
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}

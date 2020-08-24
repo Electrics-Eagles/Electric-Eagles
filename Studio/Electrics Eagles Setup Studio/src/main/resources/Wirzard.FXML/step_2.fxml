@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="466.0" prefWidth="600.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.Wirzard.Scene_2.Controller">
+   <left>
+      <VBox prefHeight="373.0" prefWidth="113.0" BorderPane.alignment="CENTER">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Getting Information" wrappingWidth="141.47003173828125" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Setup Your Drone" wrappingWidth="141.47003173828125">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Calibrate Your Drone" wrappingWidth="141.47003173828125" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Flash Your Drone" wrappingWidth="141.47003173828125" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Check Drone" wrappingWidth="141.47003173828125" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Enjoy &amp; Fly :) " wrappingWidth="141.47003173828125" />
+         </children>
+      </VBox>
+   </left>
+   <bottom>
+      <AnchorPane prefHeight="21.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <children>
+            <JFXButton buttonType="RAISED" onMouseClicked="#back" prefHeight="25.0" prefWidth="101.0" style="-fx-background-color: #42a5f5; -fx-border-color: #42a5f5;" text="Back" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </JFXButton>
+            <JFXButton buttonType="RAISED" layoutX="499.0" onMouseClicked="#next" prefHeight="25.0" prefWidth="101.0" style="-fx-background-color: #42a5f5; -fx-border-color: #42a5f5;" text="Next" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </JFXButton>
+         </children>
+      </AnchorPane>
+   </bottom>
+   <center>
+      <AnchorPane prefHeight="399.0" prefWidth="532.0" BorderPane.alignment="CENTER">
+         <children>
+            <JFXComboBox fx:id="gyro" layoutX="14.0" layoutY="34.0" prefHeight="25.0" prefWidth="239.0" />
+            <Text layoutX="14.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select Your Gyro:" wrappingWidth="244.5625" />
+            <JFXComboBox fx:id="baro" layoutX="14.0" layoutY="93.0" prefHeight="25.0" prefWidth="239.0" />
+            <Text layoutX="14.0" layoutY="86.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select Your Baro:" wrappingWidth="244.5625" />
+            <JFXComboBox fx:id="accelerometer" layoutX="14.0" layoutY="152.0" prefHeight="25.0" prefWidth="239.0" />
+            <Text layoutX="14.0" layoutY="145.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select Your Accelerometer:" wrappingWidth="244.5625" />
+            <JFXComboBox fx:id="frame" layoutX="14.0" layoutY="210.0" prefHeight="25.0" prefWidth="239.0" />
+            <Text layoutX="14.0" layoutY="203.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select Your Frame Size:" wrappingWidth="244.5625" />
+            <JFXComboBox fx:id="props" layoutX="14.0" layoutY="271.0" prefHeight="25.0" prefWidth="239.0" />
+            <Text layoutX="14.0" layoutY="264.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select Your Props Size:" wrappingWidth="244.5625" />
+            <JFXComboBox fx:id="motors" layoutX="15.0" layoutY="328.0" prefHeight="25.0" prefWidth="239.0" />
+            <Text layoutX="15.0" layoutY="321.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select Your Motors:" wrappingWidth="244.5625" />
+            <JFXComboBox fx:id="mode" layoutX="16.0" layoutY="394.0" prefHeight="25.0" prefWidth="238.0" />
+            <Text layoutX="16.0" layoutY="387.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select Your Flying Mode:" wrappingWidth="244.5625" />
+            <JFXButton buttonType="RAISED" layoutX="288.0" layoutY="29.0" onMouseClicked="#pid_settings" prefHeight="35.0" prefWidth="136.0" style="-fx-background-color: #42a5f5; -fx-border-color: #42a5f5;" text="P.I.D Settings" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </JFXButton>
+         </children>
+      </AnchorPane>
+   </center>
+</BorderPane>

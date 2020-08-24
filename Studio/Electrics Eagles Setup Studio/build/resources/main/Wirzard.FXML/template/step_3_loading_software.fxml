@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.gluonhq.charm.glisten.control.ProgressBar?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="466.0" prefWidth="600.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <left>
+      <VBox prefHeight="373.0" prefWidth="113.0" BorderPane.alignment="CENTER">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Getting Information" wrappingWidth="141.47003173828125" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Setup Your Drone" wrappingWidth="141.47003173828125" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Calibrate Your Drone" wrappingWidth="141.47003173828125">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Flash Your Drone" wrappingWidth="141.47003173828125" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Check Drone" wrappingWidth="141.47003173828125" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Enjoy &amp; Fly :) " wrappingWidth="141.47003173828125" />
+         </children>
+      </VBox>
+   </left>
+   <bottom>
+      <AnchorPane prefHeight="21.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <children>
+            <JFXButton fx:id="back" buttonType="RAISED" prefHeight="25.0" prefWidth="101.0" style="-fx-background-color: #42a5f5; -fx-border-color: #42a5f5;" text="Back" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </JFXButton>
+            <JFXButton fx:id="next" buttonType="RAISED" layoutX="499.0" prefHeight="25.0" prefWidth="101.0" style="-fx-background-color: #42a5f5; -fx-border-color: #42a5f5;" text="Next" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </JFXButton>
+         </children>
+      </AnchorPane>
+   </bottom>
+   <center>
+      <AnchorPane prefHeight="399.0" prefWidth="532.0" BorderPane.alignment="CENTER">
+         <children>
+            <ProgressBar fx:id="loading" layoutX="12.0" layoutY="88.0" prefHeight="27.0" prefWidth="438.0" />
+            <Text layoutX="14.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Loading calibrate firmware....." />
+         </children>
+      </AnchorPane>
+   </center>
+</BorderPane>

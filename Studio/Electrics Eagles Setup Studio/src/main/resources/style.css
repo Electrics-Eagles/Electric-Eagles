@@ -1,0 +1,36 @@
+/*******************************************************************************
+ *                                                                             *
+ * SplitPane                                                                   *
+ *                                                                             *
+ ******************************************************************************/
+.split-pane {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 1;
+}
+.split-pane *.split-pane-divider {
+    -fx-padding: 0 5 0 5;
+}
+.split-pane:horizontal > .split-pane-divider {
+    -fx-border-color: transparent transparent transparent transparent;
+    -fx-background-color: transparent, rgb(228,233,238);
+    -fx-background-insets: 0, 0 1 0 1;
+}
+.split-pane:vertical > .split-pane-divider {
+    -fx-border-color: transparent transparent transparent transparent;
+    -fx-background-color: transparent, rgb(228,233,238);
+    -fx-background-insets: 0, 1 0 1 0;
+}
+.split-pane *.horizontal-grabber {    
+    -fx-padding:7.5 1.5 7.5 1.5;
+    -fx-shape: "M0 0 L0 0 L2 0 L2 2 L0 2 Z M0 4 L0 4 L2 4 L2 6 L0 6 Z M0 8 L0 8 L2 8 L2 10 L0 10 Z";  
+    -fx-background-color: rgb(81,87,92);
+    -fx-background-insets:0;
+}
+.split-pane *.vertical-grabber {
+    -fx-padding:1.5 7.5 1.5 7.5;    
+    -fx-background-color: rgb(81,87,92);
+    -fx-background-insets: 0;
+    -fx-shape: "M0 0 L0 0 L2 0 L2 2 L0 2 Z M4 0 L4 0 L4 2 L6 2 L6 0 Z M8 0 L8 0 L8 2 L10 2 L10 0 Z";
+}
+

@@ -1,0 +1,14 @@
+{
+	"name": "Demo",
+	"description": "Is a small module for checking are all system working",
+	"version": "v1.0.8",
+	"controller": "arduino:nano",
+	"tasks": {
+		"insert": "after_insert:void setup():include <GPS.h>;"
+	},
+	"run": {
+		"run": "./configurator/Demo.exe"
+
+	}
+
+}

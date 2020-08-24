@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.Wirzard.Scene_1.Controller">
+   <left>
+      <VBox prefHeight="373.0" prefWidth="113.0" BorderPane.alignment="CENTER">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Getting Information" wrappingWidth="141.47003173828125">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Setup Your Drone" wrappingWidth="141.47003173828125" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Calibrate Your Drone" wrappingWidth="141.47003173828125" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Flash Your Drone" wrappingWidth="141.47003173828125" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Check Drone" wrappingWidth="141.47003173828125" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Enjoy &amp; Fly :) " wrappingWidth="141.47003173828125" />
+         </children>
+      </VBox>
+   </left>
+   <bottom>
+      <AnchorPane prefHeight="21.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <children>
+            <JFXButton buttonType="RAISED" onMouseClicked="#back" prefHeight="25.0" prefWidth="101.0" style="-fx-background-color: #42a5f5; -fx-border-color: #42a5f5;" text="Back" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </JFXButton>
+            <JFXButton buttonType="RAISED" layoutX="499.0" onMouseClicked="#next" prefHeight="25.0" prefWidth="101.0" style="-fx-background-color: #42a5f5; -fx-border-color: #42a5f5;" text="Next" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </JFXButton>
+            <JFXButton buttonType="RAISED" layoutX="386.0" layoutY="-1.0" onMouseClicked="#apply" prefHeight="25.0" prefWidth="101.0" style="-fx-background-color: #42a5f5; -fx-border-color: #42a5f5;" text="Apply" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </JFXButton>
+         </children>
+      </AnchorPane>
+   </bottom>
+   <center>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <JFXTextField fx:id="project_name" layoutX="14.0" layoutY="39.0" prefHeight="25.0" prefWidth="408.0" />
+            <Text layoutX="14.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Project Name:" />
+            <JFXTextField fx:id="project_path" layoutX="13.0" layoutY="110.0" prefHeight="25.0" prefWidth="409.0" />
+            <Text layoutX="14.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Project Path:" />
+            <JFXTextArea fx:id="project_description" layoutX="14.0" layoutY="165.0" prefHeight="101.0" prefWidth="395.0" />
+            <JFXButton buttonType="RAISED" layoutX="311.0" layoutY="78.0" prefHeight="25.0" prefWidth="101.0" style="-fx-background-color: #42a5f5; -fx-border-color: #42a5f5;" text="Select" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </JFXButton>
+            <Text layoutX="18.0" layoutY="154.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Project Description" />
+            <JFXComboBox fx:id="fly_mode" layoutX="213.0" layoutY="297.0" prefHeight="25.0" prefWidth="196.0" />
+            <Text layoutX="145.0" layoutY="323.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Fly Mode" />
+         </children>
+      </AnchorPane>
+   </center>
+</BorderPane>

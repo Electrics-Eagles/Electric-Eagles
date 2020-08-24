@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.gluonhq.charm.glisten.control.ProgressBar?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="157.0" prefWidth="332.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.Loader.Controller">
+   <center>
+      <ImageView fitHeight="166.0" fitWidth="335.0"  pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+         <image>
+            <Image url="@logo.png" />
+         </image>
+      </ImageView>
+   </center>
+   <top>
+      <Text fx:id="load_text" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="330.93669509887695" BorderPane.alignment="CENTER" />
+   </top>
+   <bottom>
+      <ProgressBar fx:id="progress_bar" prefHeight="26.0" prefWidth="358.0" style="-fx-accent: #048935; -fx-control-inner-background: #048935; -fx-background-color: #ffffffff;" BorderPane.alignment="CENTER" />
+   </bottom>
+</BorderPane>

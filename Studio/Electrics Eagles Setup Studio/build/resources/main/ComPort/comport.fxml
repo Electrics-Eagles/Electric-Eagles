@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="421.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.ComPort.Controller">
+   <children>
+      <JFXComboBox fx:id="comport" layoutX="14.0" layoutY="59.0" prefHeight="48.0" prefWidth="381.0" />
+      <JFXButton buttonType="RAISED" layoutX="14.0" layoutY="150.0" onMouseClicked="#exit" prefHeight="36.0" prefWidth="94.0" style="-fx-background-color: #42a5f5; -fx-border-color: #42a5f5;" text="Exit" textFill="WHITE">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </JFXButton>
+      <JFXButton buttonType="RAISED" layoutX="313.0" layoutY="150.0" onMouseClicked="#save" prefHeight="36.0" prefWidth="94.0" style="-fx-background-color: #42a5f5; -fx-border-color: #42a5f5;" text="Save" textFill="WHITE">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </JFXButton>
+   </children>
+</AnchorPane>
