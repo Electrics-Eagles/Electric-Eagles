@@ -31,3 +31,8 @@ Special Thanks your Physics Teacher :  Георию Вильевичу.
 
 
 
+<link rel="stylesheet" href="project.css">
+
+<button class="will_be_dead_soon">
+Will be dead soon
+</button>
