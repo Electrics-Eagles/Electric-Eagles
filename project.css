@@ -1,0 +1,30 @@
+.abandoned {
+background-color:#28464B;
+color:#ffffff;
+border-radius:15px;
+
+
+}
+.alive {
+background-color:#42d9c8;
+color:#ffffff;
+border-radius:15px;
+}
+
+.dead {
+background-color:#931621;
+color:#ffffff;
+border-radius:15px;
+}
+
+.near_to_die {
+background-color:#326771;
+color:#ffffff;
+border-radius:15px;
+}
+
+.will_be_dead_soon {
+background-color:#2c8c99;
+color:#ffffff;
+border-radius:15px;
+}
