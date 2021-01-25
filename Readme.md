@@ -30,11 +30,4 @@ And your 3 minds :)
 Special Thanks your Physics Teacher :  Георию Вильевичу.
 
 
-<div> 
-<link rel="stylesheet" href="project.css">
-
-<a class="will_be_dead_soon">
-Will be dead soon
-</a>
-
-</div>
+<img src="https://github.com/Electrics-Eagles/Electric-Eagles/raw/master/dead_soon.png"></img>
