@@ -30,4 +30,4 @@ And your 3 minds :)
 Special Thanks your Physics Teacher :  Георию Вильевичу.
 
 
-<img src="https://github.com/Electrics-Eagles/Electric-Eagles/raw/master/dead_soon.png"></img>
+
