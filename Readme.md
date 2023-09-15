@@ -14,21 +14,21 @@ It still developes. All information are available on  [Our website](https://gith
 
 In Creating Project was used  : 
 
-YMFC-AL Version 1.4 
-Arduino IDE 1.8.10 and 1.0.6
-Sublime Text 3.22
-Python 3.7.6
-Java 11u06
-Deviot 
-Ardunio Nano v3 (CH340)
-Motors and ESC from DJI Phantom 1 (FC40)
-DJI 450 Frame
-2200 mah 11.1v battary
-SMD caparators (1206) 2mf,1mf,0.1nf
-Resistors SMD (1206)
-And your 3 minds :) 
+1. YMFC-AL Version 1.4
+2. Arduino IDE 1.8.10 and 1.0.6  
+3. Sublime Text 3.22   
+4. Python 3.7.6  
+5. Java 11u06  
+6. Deviot  
+7. Ardunio Nano v3 (CH340)  
+8. Motors and ESC from DJI Phantom 1 (FC40)  
+9. DJI 450 Frame  
+10. 2200 mah 11.1v battary  
+11. SMD caparators (1206) 2mf,1mf,0.1nf  
+12. Resistors SMD (1206)  
+13. And your 3 minds :)  
 
-Special Thanks your Physics Teacher :  Георию Вильевичу.
+Special Thanks your Physics Teacher :  Георию Вильевичу.  
 
 
 
