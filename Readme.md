@@ -3,7 +3,7 @@ Project Overview
 The Electric Eagle Drone Project is a collaborative effort led by a team of three dedicated individuals:  
 * Alex Zaslvskis
 * Mike Zaslvskis
-* Danilo Zile
+* Daniel Zile
 
 # Objectives
 Our primary objective was to create a simple and flexible platform for developing Arduino-based drones. The project is an ongoing endeavor, and you can find detailed information on our official website.
